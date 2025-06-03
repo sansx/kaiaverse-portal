@@ -1,12 +1,19 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Navbar = () => {
   return (
     <nav className="bg-white shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-bold">
-            Kaiaverse
+          <Link href="/" className="flex items-center space-x-2">
+            <Image 
+              src="/images/kaiaverse_icon.svg" 
+              alt="Kaiaverse Logo" 
+              width={32} 
+              height={32}
+            />
+            <span className="text-xl font-bold">Kaiaverse</span>
           </Link>
           <div className="flex space-x-8">
             <Link href="/" className="hover:text-blue-600">

@@ -8,6 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Kaiaverse Portal",
   description: "Your AI-First Gateway to the Kaia Ecosystem",
+  icons: {
+    icon: '/images/kaiaverse_icon.svg',
+    apple: '/images/kaiaverse_icon.svg',
+  },
 };
 
 export default function RootLayout({
