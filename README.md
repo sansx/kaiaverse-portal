@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kaiaverse Portal (Beta)
 
-## Getting Started
+> Your AI-powered gateway to the Kaia ecosystem
 
-First, run the development server:
+Kaiaverse Portal serves as the unified gateway to the KaiaChain ecosystem, combining intelligent features with essential tools to make blockchain technology more accessible and intuitive for everyone.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🤖 AI-Enhanced Features
+
+- **Intelligent Assistant** - Natural language interaction
+  - Context-aware ecosystem queries
+  - Smart documentation search
+  - Personalized guidance
+  - Tool recommendations
+
+- **Analytics Insights** - Data-driven intelligence
+  - Pattern recognition in transactions
+  - Trend analysis and predictions
+  - Risk assessment metrics
+  - Market behavior analysis
+
+## 🚀 Core Features
+
+- **Analytics Dashboard** - Real-time ecosystem metrics
+  - Transaction volume tracking
+  - Active wallet statistics
+  - Staking analytics
+  - Token distribution overview
+
+- **Tools Suite** - Essential ecosystem tools
+  - Kaia Faucet (Testnet tokens)
+  - Staking services
+  - Token swap platform
+  - Lending services
+
+- **Events Calendar** - Community engagement
+  - Developer conferences
+  - Hackathons
+  - Community AMAs
+  - Technical workshops
+
+- **Resource Hub** - Comprehensive documentation
+  - Development guides
+  - API documentation
+  - Tutorial library
+  - Community resources
+
+## 💻 Tech Stack
+
+- [Next.js 14](https://nextjs.org/) - React Framework
+- [React 18](https://reactjs.org/) - UI Library
+- [Tailwind CSS](https://tailwindcss.com/) - Styling Framework
+- [Recharts](https://recharts.org/) - Data Visualization
+- [TypeScript](https://www.typescriptlang.org/) - Type Safety
+- AI Integration - Enhanced user experience
+
+## 🏁 Getting Started
+
+1. **Prerequisites**
+   - Node.js 18.0.0 or higher
+   - pnpm 8.0.0 or higher
+
+2. **Install Dependencies**
+   ```bash
+   pnpm install
+   ```
+
+3. **Start Development Server**
+   ```bash
+   pnpm dev
+   ```
+
+4. **Build for Production**
+   ```bash
+   pnpm build
+   ```
+
+5. **Start Production Server**
+   ```bash
+   pnpm start
+   ```
+
+## 📁 Project Structure
+
+```
+app/
+├── components/     # Shared components
+├── stats/         # Analytics dashboard
+├── tools/         # Tools suite
+├── events/        # Events calendar
+├── resources/     # Resource hub
+└── page.tsx       # Home page
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Development Guidelines
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- TypeScript for robust development
+- Next.js App Router architecture
+- Component-based architecture
+- Responsive design principles
+- Clean and maintainable code practices
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🤝 Contributing
 
-## Learn More
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[MIT License](LICENSE)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📱 Contact
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Get in touch through our community channels:
+- GitHub Issues
+- Discord Community
+- Official Twitter
