@@ -13,11 +13,17 @@ const Navbar = () => {
               width={32} 
               height={32}
             />
-            <span className="text-xl font-bold">Kaiaverse</span>
+            <div className="flex items-center">
+              <span className="text-xl font-bold">Kaiaverse</span>
+              <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-600 rounded-full">Beta</span>
+            </div>
           </Link>
           <div className="flex space-x-8">
             <Link href="/" className="hover:text-blue-600">
               Home
+            </Link>
+            <Link href="/stats" className="hover:text-blue-600">
+              Stats
             </Link>
             <Link href="/tools" className="hover:text-blue-600">
               Tools
