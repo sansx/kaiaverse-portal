@@ -29,11 +29,6 @@ export default function ResourcesPage() {
       category: "社区资源",
       items: [
         {
-          title: "中文社区",
-          description: "访问Kaia中文社区",
-          link: "https://magnetic-eyeliner-b47.notion.site/Kaia-Friends-17a52847ec2b8035bd12cc521dcb61fe?source=copy_link",
-        },
-        {
           title: "Discord社区",
           description: "加入我们的Discord社区进行交流",
           link: "http://discord.gg/kaiachain",
