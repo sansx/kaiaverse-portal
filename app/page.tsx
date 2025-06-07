@@ -1,36 +1,53 @@
 import AIQueryBox from './components/AIQueryBox';
+import StructuredData from './components/StructuredData';
 
 export default function Home() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Kaiaverse Portal",
+    "description": "Your AI-powered gateway to the Kaia ecosystem",
+    "url": "https://kaiaverse.xyz",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://kaiaverse.xyz/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4">
-          Welcome to Kaiaverse Portal
-        </h1>
-        <p className="text-xl text-gray-600 mb-8">
-          Your AI-powered gateway to the Kaia ecosystem
-        </p>
-        <AIQueryBox />
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-          <FeatureCard
-            title="Tools & Services"
-            description="Access Kaia ecosystem tools including faucet, staking, swap, and lending services"
-            link="/tools"
-          />
-          <FeatureCard
-            title="Events Calendar"
-            description="Stay updated with global Kaia ecosystem events and activities"
-            link="/events"
-          />
-          <FeatureCard
-            title="Resource Hub"
-            description="Explore comprehensive resources, documentation, and community links"
-            link="/resources"
-          />
+    <>
+      <StructuredData data={structuredData} />
+      <div className="min-h-screen py-12">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-4">
+            Welcome to Kaiaverse Portal
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Your AI-powered gateway to the Kaia ecosystem
+          </p>
+          <AIQueryBox />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+            <FeatureCard
+              title="Tools & Services"
+              description="Access Kaia ecosystem tools including faucet, staking, swap, and lending services"
+              link="/tools"
+            />
+            <FeatureCard
+              title="Events Calendar"
+              description="Stay updated with global Kaia ecosystem events and activities"
+              link="/events"
+            />
+            <FeatureCard
+              title="Resource Hub"
+              description="Explore comprehensive resources, documentation, and community links"
+              link="/resources"
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
