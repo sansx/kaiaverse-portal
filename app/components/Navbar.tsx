@@ -8,7 +8,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center space-x-2">
             <Image 
-              src="/images/kaiaverse_icon.svg" 
+              src="/images/kaiaverse_icon.png"
               alt="Kaiaverse Logo" 
               width={32} 
               height={32}
