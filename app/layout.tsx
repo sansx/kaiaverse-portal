@@ -17,8 +17,8 @@ export const metadata: Metadata = {
   publisher: "Kaiaverse",
   robots: "index, follow",
   icons: {
-    icon: '/images/kaiaverse_icon.svg',
-    apple: '/images/kaiaverse_icon.svg',
+    icon: '/images/kaiaverse_icon.png',
+    apple: '/images/kaiaverse_icon.png',
   },
   openGraph: {
     type: 'website',
