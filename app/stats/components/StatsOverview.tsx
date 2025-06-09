@@ -122,8 +122,8 @@ export default function StatsOverview() {
   return (
     <div>
       {/* KaiaChain Stats */}
-      <div className="flex flex-col md:flex-row gap-6 mb-8">
-        <div className="flex items-center min-w-0 md:w-auto md:flex-shrink-0">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 items-stretch">
+        <div className="flex items-center min-w-0 md:col-span-1">
           {/* logo */}
           <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mr-3 overflow-hidden">
             <Image
@@ -153,59 +153,61 @@ export default function StatsOverview() {
           </div>
         </div>
 
-        <MoreDetailsCard
-          href="https://kaiascan.io/"
-          linkText="kaiascan"
-          className="mt-10"
-        >
-          <div className="flex-1 min-w-0 flex items-stretch w-full dark:bg-gray-800 rounded-2xl p-4 flex-col">
-            <div className="flex items-center justify-between  mb-5">
-              <div className="flex items-center mr-8 min-w-fit">
-                <div className="w-12 h-12 rounded-xl bg-[#49546A] flex items-center justify-center mr-2">
-                  <FaNetworkWired className="w-7 h-7 text-white/80" />
+        <div className="md:col-span-3 flex flex-col justify-stretch">
+          <MoreDetailsCard
+            href="https://kaiascan.io/"
+            linkText="kaiascan"
+            className="h-full"
+          >
+            <div className="flex-1 min-w-0 flex items-stretch w-full dark:bg-gray-800 rounded-2xl p-4 flex-col h-full">
+              <div className="flex items-center justify-between  mb-5">
+                <div className="flex items-center mr-8 min-w-fit">
+                  <div className="w-12 h-12 rounded-xl bg-[#49546A] flex items-center justify-center mr-2">
+                    <FaNetworkWired className="w-7 h-7 text-white/80" />
+                  </div>
+                  <span className="text-xl font-semibold text-white/90">
+                    主网
+                  </span>
                 </div>
-                <span className="text-xl font-semibold text-white/90">
-                  主网
-                </span>
+                <div className="flex items-center bg-white/10 rounded-lg px-4 py-2 shadow-sm">
+                  <FaNetworkWired className="w-5 h-5 text-[#BFF007] mr-2" />
+                  <span className="text-sm text-gray-200 mr-1">当前区块高度</span>
+                  <span className="text-xl font-bold text-[#BFF007] tracking-wider">
+                    {blockHeight}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center bg-white/10 rounded-lg px-4 py-2 shadow-sm">
-                <FaNetworkWired className="w-5 h-5 text-[#BFF007] mr-2" />
-                <span className="text-sm text-gray-200 mr-1">当前区块高度</span>
-                <span className="text-xl font-bold text-[#BFF007] tracking-wider">
-                  {blockHeight}
-                </span>
+              <div className=" flex items-center">
+                <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-8">
+                  <div className="flex flex-col">
+                    <span className="text-sm text-[#A2A9B6] mb-1">
+                      共识节点数
+                    </span>
+                    <span className="text-2xl font-bold text-white">41</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-[#A2A9B6] mb-1">
+                      平均出块时间<sup className="ml-0.5">(1小时)</sup>
+                    </span>
+                    <span className="text-2xl font-bold text-white">1.0s</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-[#A2A9B6] mb-1">
+                      平均出块时间<sup className="ml-0.5">(24小时)</sup>
+                    </span>
+                    <span className="text-2xl font-bold text-white">1.0s</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm text-[#A2A9B6] mb-1">
+                      区块平均交易数<sup className="ml-0.5">(24小时)</sup>
+                    </span>
+                    <span className="text-2xl font-bold text-white">13.2</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className=" flex items-center">
-              <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-8">
-                <div className="flex flex-col">
-                  <span className="text-sm text-[#A2A9B6] mb-1">
-                    共识节点数
-                  </span>
-                  <span className="text-2xl font-bold text-white">41</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm text-[#A2A9B6] mb-1">
-                    平均出块时间<sup className="ml-0.5">(1小时)</sup>
-                  </span>
-                  <span className="text-2xl font-bold text-white">1.0s</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm text-[#A2A9B6] mb-1">
-                    平均出块时间<sup className="ml-0.5">(24小时)</sup>
-                  </span>
-                  <span className="text-2xl font-bold text-white">1.0s</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm text-[#A2A9B6] mb-1">
-                    区块平均交易数<sup className="ml-0.5">(24小时)</sup>
-                  </span>
-                  <span className="text-2xl font-bold text-white">13.2</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </MoreDetailsCard>
+          </MoreDetailsCard>
+        </div>
       </div>
       <MoreDetailsCard
         href="https://www.coingecko.com/en/coins/kaia"
