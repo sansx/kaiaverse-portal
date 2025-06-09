@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function StatsPage() {
   return (
     <main className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">KaiaChain 生态数据统计</h1>
+      <h1 className="text-3xl font-bold mb-2">KaiaChain 生态数据统计</h1>
       <div className="grid gap-8">
         <StatsOverview />
         <StatsCharts />
