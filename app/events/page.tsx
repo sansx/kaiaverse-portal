@@ -423,7 +423,7 @@ export default function EventsPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-900">活动日历</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">未来活动日历</h2>
                 <div className="w-full">
                   <iframe
                     src="https://lu.ma/embed/calendar/cal-Zxd3NPs07srlXc3/events"
