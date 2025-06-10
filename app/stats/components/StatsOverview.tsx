@@ -33,23 +33,19 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, change, trend }) => {
   }
 
   return (
-    <div className="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-xl shadow border border-gray-100 dark:border-gray-700 transition hover:shadow-md">
+    <div className="flex items-center justify-between bg-white p-4 rounded-xl shadow border border-gray-100 transition hover:shadow-md">
       <div>
-        <p className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-          {value}
-        </p>
+        <p className="text-2xl font-bold text-gray-900 mb-1">{value}</p>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500 dark:text-gray-400">
-            {title}
-          </span>
+          <span className="text-sm text-gray-500">{title}</span>
           {change && (
             <span
               className={`text-xs font-semibold rounded px-1.5 py-0.5 inline-flex items-center gap-0.5 ${
                 trend === "up"
-                  ? "text-green-700 bg-green-50 dark:bg-green-900/30"
+                  ? "text-green-700 bg-green-50"
                   : trend === "down"
-                  ? "text-red-700 bg-red-50 dark:bg-red-900/30"
-                  : "text-gray-500 bg-gray-100 dark:bg-gray-700/30"
+                  ? "text-red-700 bg-red-50"
+                  : "text-gray-500 bg-gray-100"
               }`}
             >
               {trend === "up" ? (
@@ -74,6 +70,12 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, change, trend }) => {
 };
 
 export default function StatsOverview() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Demo数据
   const stats = [
     {
@@ -108,15 +110,10 @@ export default function StatsOverview() {
 
   // 当前区块高度动态增长
   const [blockHeight, setBlockHeight] = useState(187419980);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setBlockHeight((prev) => prev + Math.floor(Math.random() * 3) + 1);
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <div>
+
       {/* KaiaChain Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 items-stretch">
         <div className="flex items-center min-w-0 md:col-span-1">
@@ -155,20 +152,22 @@ export default function StatsOverview() {
             linkText="kaiascan"
             className="h-full"
           >
-            <div className="flex-1 min-w-0 flex items-stretch w-full dark:bg-gray-800 rounded-2xl p-4 flex-col h-full">
+            <div className="flex-1 min-w-0 flex items-stretch w-full rounded-2xl p-4 flex-col h-full bg-white text-gray-900 shadow border border-gray-100">
               <div className="flex items-center justify-between  mb-5">
                 <div className="flex items-center mr-8 min-w-fit">
-                  <div className="w-12 h-12 rounded-xl bg-[#49546A] flex items-center justify-center mr-2">
-                    <FaNetworkWired className="w-7 h-7 text-white/80" />
+                  <div className="w-10 h-10 rounded-xl bg-[#49546A] flex items-center justify-center mr-2">
+                    <FaNetworkWired className="w-7 h-7" />
                   </div>
-                  <span className="text-xl font-semibold text-white/90">
-                    主网
-                  </span>
+                  <span className="text-xl font-semibold">主网</span>
                 </div>
-                <div className="flex items-center bg-white/10 rounded-lg px-4 py-2 shadow-sm">
-                  <FaNetworkWired className="w-5 h-5 text-[#BFF007] mr-2" />
-                  <span className="text-sm text-gray-200 mr-1">当前区块高度</span>
-                  <span className="text-xl font-bold text-[#BFF007] tracking-wider">
+                <div className="flex justify-between bg-[#49546A] rounded-lg px-4 py-2 shadow-sm">
+                  <div className="flex items-center">
+                    <FaNetworkWired className="w-5 h-5 text-[#BFF007] mr-2" />
+                    <span className="text-sm text-gray-200 mr-1">
+                      当前区块高度
+                    </span>
+                  </div>
+                  <span className="text-xl text-center font-bold text-[#BFF007] tracking-wider min-w-32">
                     {blockHeight}
                   </span>
                 </div>
@@ -176,28 +175,28 @@ export default function StatsOverview() {
               <div className=" flex items-center">
                 <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-8">
                   <div className="flex flex-col">
-                    <span className="text-sm text-[#A2A9B6] mb-1">
+                    <span className="text-sm text-gray-500 mb-1">
                       共识节点数
                     </span>
-                    <span className="text-2xl font-bold text-white">41</span>
+                    <span className="text-2xl font-bold">41</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm text-[#A2A9B6] mb-1">
+                    <span className="text-sm text-gray-500 mb-1">
                       平均出块时间<sup className="ml-0.5">(1小时)</sup>
                     </span>
-                    <span className="text-2xl font-bold text-white">1.0s</span>
+                    <span className="text-2xl font-bold">1.0s</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm text-[#A2A9B6] mb-1">
+                    <span className="text-sm text-gray-500 mb-1">
                       平均出块时间<sup className="ml-0.5">(24小时)</sup>
                     </span>
-                    <span className="text-2xl font-bold text-white">1.0s</span>
+                    <span className="text-2xl font-bold">1.0s</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm text-[#A2A9B6] mb-1">
+                    <span className="text-sm text-gray-500 mb-1">
                       区块平均交易数<sup className="ml-0.5">(24小时)</sup>
                     </span>
-                    <span className="text-2xl font-bold text-white">13.2</span>
+                    <span className="text-2xl font-bold">13.2</span>
                   </div>
                 </div>
               </div>
