@@ -129,6 +129,6 @@ Get in touch through our community channels:
 [![Medium](https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/kaiachain)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kaiachain)
 
-© 2024 Kaiaverse. All rights reserved.
+© 2025 Kaiaverse. All rights reserved.
 
 </div>
