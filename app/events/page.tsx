@@ -78,7 +78,6 @@ export default function EventsPage() {
   // 解析中文日期字符串为Date对象
   const parseChineseDate = (dateStr: string): { startDate: Date; endDate?: Date } => {
     const now = new Date();
-    const currentYear = now.getFullYear();
     
     try {
       // 处理日期范围格式：如 "2024年9月16-20日 10:00-17:00"

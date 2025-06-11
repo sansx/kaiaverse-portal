@@ -46,8 +46,8 @@ Kaiaverse Portal serves as the unified gateway to the KaiaChain ecosystem, combi
 
 ## 💻 Tech Stack
 
-- [Next.js 14](https://nextjs.org/) - React Framework
-- [React 18](https://reactjs.org/) - UI Library
+- [Next.js 15](https://nextjs.org/) - React Framework
+- [React 19](https://reactjs.org/) - UI Library
 - [Tailwind CSS](https://tailwindcss.com/) - Styling Framework
 - [Recharts](https://recharts.org/) - Data Visualization
 - [TypeScript](https://www.typescriptlang.org/) - Type Safety

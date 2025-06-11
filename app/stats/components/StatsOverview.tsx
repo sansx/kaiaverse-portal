@@ -4,7 +4,6 @@ import { MdTrendingFlat } from "react-icons/md";
 import {
   FaCaretUp,
   FaCaretDown,
-  FaInfoCircle,
   FaNetworkWired,
 } from "react-icons/fa";
 import Image from "next/image";
@@ -106,9 +105,6 @@ export default function StatsOverview() {
   // Kaia价格和涨幅demo
   const kaiaPrice = 0.1231;
   const kaiaChange = 15.2;
-  const kaiaRank = 121;
-  // Fear & Greed Index demo
-  const fgIndex = 72; // 0-100, 0极度恐惧，100极度贪婪
 
   // 当前区块高度动态增长
   const [blockHeight, setBlockHeight] = useState(187419980);
