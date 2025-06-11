@@ -11,9 +11,6 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 import MoreDetailsCard from "@/components/MoreDetailsCard";
 
@@ -35,15 +32,6 @@ const stakingData = [
   { name: "5月", locked: 2800000, flexible: 2200000 },
   { name: "6月", locked: 3000000, flexible: 2400000 },
 ];
-
-const distributionData = [
-  { name: "质押", value: 5400000 },
-  { name: "流动性挖矿", value: 2500000 },
-  { name: "治理", value: 1500000 },
-  { name: "生态基金", value: 500000 },
-];
-
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 export default function StatsCharts() {
   return (
