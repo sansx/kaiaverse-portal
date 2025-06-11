@@ -238,7 +238,7 @@ export default function StatsOverview() {
       }
     };
 
-    fetchNetworkStats();
+    // fetchNetworkStats();
   }, []);
 
   useEffect(() => {
@@ -372,7 +372,6 @@ export default function StatsOverview() {
       )} */}
       {/* KaiaChain Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 items-stretch">
-        
         <div className="flex items-center min-w-0 md:col-span-1">
           {/* logo */}
           <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mr-3 overflow-hidden">
@@ -408,7 +407,7 @@ export default function StatsOverview() {
           </div>
         </div>
 
-        <div className="md:col-span-3 flex flex-col justify-stretch">
+        {/* <div className="md:col-span-3 flex flex-col justify-stretch">
           <MoreDetailsCard
             href="https://kaiascan.io/"
             linkText="kaiascan"
@@ -475,7 +474,7 @@ export default function StatsOverview() {
               </div>
             </div>
           </MoreDetailsCard>
-        </div>
+        </div> */}
       </div>
       <MoreDetailsCard
         href="https://www.coingecko.com/en/coins/kaia"
