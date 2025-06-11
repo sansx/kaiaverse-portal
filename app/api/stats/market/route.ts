@@ -24,7 +24,7 @@ export interface MarketData {
     total_volume?: Record<string, number>;
     high_24h?: Record<string, number>;
     low_24h?: Record<string, number>;
-    [key: string]: any; // 允许任意其他市场数据字段
+    [key: string]: unknown; // 允许任意其他市场数据字段
   };
   
   // 时间相关
@@ -33,14 +33,14 @@ export interface MarketData {
   
   // 其他可能的字段
   description?: Record<string, string>;
-  links?: Record<string, any>;
+  links?: Record<string, unknown>;
   image?: Record<string, string>;
-  developer_data?: Record<string, any>;
-  community_data?: Record<string, any>;
-  public_interest_stats?: Record<string, any>;
+  developer_data?: Record<string, unknown>;
+  community_data?: Record<string, unknown>;
+  public_interest_stats?: Record<string, unknown>;
   
   // 索引签名 - 允许任意其他属性
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // 内存缓存
@@ -196,10 +196,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
-
-// 清除缓存的辅助函数（可以在需要时调用）
-export function clearCache() {
-  memoryCache = null;
-  console.log('市场数据内存缓存已清除');
 }

@@ -41,7 +41,7 @@ async function retryOperation<T>(
 }
 
 // 同步市场数据的核心逻辑
-async function syncMarketData(): Promise<any> {
+async function syncMarketData(): Promise<unknown> {
   // 检查是否刚刚同步过（防止频繁同步）
   const lastSync = await redis.get(MARKET_LAST_SYNC_KEY);
   if (lastSync) {
@@ -67,7 +67,7 @@ async function syncMarketData(): Promise<any> {
     }
     
     return result;
-  }) as any;
+  });
 
   console.log('成功获取市场数据，准备写入 Redis...');
 
@@ -134,9 +134,9 @@ export async function GET(request: Request) {
         message: 'Cron 同步完成',
         syncTime: new Date().toLocaleString('zh-CN'),
         syncedData: {
-          symbol: data.symbol,
-          name: data.name,
-          last_updated: data.last_updated
+          symbol: (data as Record<string, unknown>)?.symbol || 'unknown',
+          name: (data as Record<string, unknown>)?.name || 'unknown',
+          last_updated: (data as Record<string, unknown>)?.last_updated || new Date().toISOString()
         }
       });
     } catch (error) {

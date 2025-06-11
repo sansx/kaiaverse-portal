@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { MdSubdirectoryArrowRight, MdArrowRight } from "react-icons/md";
+import React, { useState } from "react";
+import { MdSubdirectoryArrowRight } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaAngleRight } from "react-icons/fa";
 

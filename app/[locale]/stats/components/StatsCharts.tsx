@@ -1,38 +1,7 @@
 "use client";
 
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-} from "recharts";
 import MoreDetailsCard from "@/components/MoreDetailsCard";
 import { useRef, useState } from "react";
-
-// Demo数据
-const transactionData = [
-  { name: "1月", value: 15000 },
-  { name: "2月", value: 25000 },
-  { name: "3月", value: 18000 },
-  { name: "4月", value: 30000 },
-  { name: "5月", value: 28000 },
-  { name: "6月", value: 35000 },
-];
-
-const stakingData = [
-  { name: "1月", locked: 2000000, flexible: 1500000 },
-  { name: "2月", locked: 2200000, flexible: 1600000 },
-  { name: "3月", locked: 2400000, flexible: 1800000 },
-  { name: "4月", locked: 2600000, flexible: 2000000 },
-  { name: "5月", locked: 2800000, flexible: 2200000 },
-  { name: "6月", locked: 3000000, flexible: 2400000 },
-];
 
 export default function StatsCharts() {
   // miniapp 区域 iframe 加载
