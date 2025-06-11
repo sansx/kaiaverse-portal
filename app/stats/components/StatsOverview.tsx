@@ -4,8 +4,6 @@ import { MdTrendingFlat } from "react-icons/md";
 import {
   FaCaretUp,
   FaCaretDown,
-  FaNetworkWired,
-  FaChartLine,
   FaCoins,
   FaExchangeAlt,
   FaChartPie,
@@ -13,7 +11,6 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import MoreDetailsCard from "@/components/MoreDetailsCard";
-import KaiaLoading from "@/components/KaiaLoading";
 
 interface StatCardProps {
   title: string;
@@ -179,23 +176,47 @@ const PriceShowSkeleton = () => (
   </div>
 );
 
+interface MarketData {
+  price: {
+    current: string;
+    change: string;
+    trend: "up" | "down";
+  };
+  market: Array<{
+    title: string;
+    value: string;
+    change?: string;
+    trend?: "up" | "down";
+    customIcon?: {
+      icon: React.ReactNode;
+      bgColor?: string;
+      iconColor?: string;
+    };
+  }>;
+}
+
 export default function StatsOverview() {
-  const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_loading, setLoading] = useState(true);
   const [blockHeight, setBlockHeight] = useState<number>();
   const [timer, setTimer] = useState<NodeJS.Timeout>();
-  const [networkStats, setNetworkStats] = useState<{
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_networkStats, setNetworkStats] = useState<{
     nodes: number;
     avgBlockTime: number;
     avgBlockTime24h: number;
     avgTxCount24h: number;
     totalFees: number;
   }>();
-  const [networkLoading, setNetworkLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_networkLoading, setNetworkLoading] = useState(true);
   const [marketLoading, setMarketLoading] = useState(true);
-  const [showLoading, setShowLoading] = useState(true);
-  const [marketData, setMarketData] = useState<any>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_showLoading, setShowLoading] = useState(true);
+  const [marketData, setMarketData] = useState<MarketData>();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const fetchNetworkStats = async () => {
       try {
         setNetworkLoading(true);
@@ -207,11 +228,11 @@ export default function StatsOverview() {
         // 计算平均出块时间
         const blockTimes = blocks.results
           .slice(0, -1)
-          .map((block: any, index: number) => {
-            const currentTime = new Date(block.datetime).getTime();
-            const nextTime = new Date(
-              blocks.results[index + 1].datetime
-            ).getTime();
+          .map((block: unknown, index: number) => {
+            const blockData = block as { datetime: string };
+            const nextBlockData = blocks.results[index + 1] as { datetime: string };
+            const currentTime = new Date(blockData.datetime).getTime();
+            const nextTime = new Date(nextBlockData.datetime).getTime();
             return (currentTime - nextTime) / 1000; // 转换为秒
           });
 
@@ -227,7 +248,10 @@ export default function StatsOverview() {
           totalFees: totalFees.result * 1,
           avgTxCount24h:
             blocks.results.reduce(
-              (acc: number, block: any) => acc + block.total_transaction_count,
+              (acc: number, block: unknown) => {
+                const blockData = block as { total_transaction_count: number };
+                return acc + blockData.total_transaction_count;
+              },
               0
             ) / blocks.results.length,
         });
@@ -350,17 +374,13 @@ export default function StatsOverview() {
       });
     }, 1000);
     setTimer(tempTimer);
-  }, [blockHeight]);
+  }, [blockHeight, timer]);
 
   useEffect(() => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, []);
-
-  const handleLoadingComplete = () => {
-    setShowLoading(false);
-  };
+  }, [timer]);
 
   return (
     <div>
@@ -482,8 +502,8 @@ export default function StatsOverview() {
         loading={marketLoading}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[90px]">
-          {marketData?.market.map((stat: any, index: number) => (
-            <StatCard key={index} {...stat} />
+          {marketData?.market.map((stat, index: number) => (
+            <StatCard key={index} {...stat} trend={stat.trend || "flat"} />
           ))}
         </div>
       </MoreDetailsCard>

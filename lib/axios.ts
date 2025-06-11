@@ -7,7 +7,7 @@ interface RequestConfig extends AxiosRequestConfig {
 }
 
 // 响应数据类型
-interface ResponseData<T = any> {
+interface ResponseData<T = unknown> {
   code: number;
   data: T;
   message: string;
@@ -76,7 +76,11 @@ function createAxiosInstance(config: CreateAxiosConfig = {}): AxiosInstance {
         return Promise.reject(new Error(data.message));
       }
 
-      return data.data;
+      // 创建一个新的响应对象，将data.data作为响应数据
+      return {
+        ...response,
+        data: data.data
+      } as AxiosResponse;
     },
     (error: AxiosError) => {
       if (error.response) {
@@ -123,19 +127,19 @@ const defaultInstance = createAxiosInstance();
 
 // 封装请求方法
 export const request = {
-  get: <T = any>(url: string, config?: RequestConfig) => 
+  get: <T = unknown>(url: string, config?: RequestConfig) => 
     defaultInstance.get<T, T>(url, config),
   
-  post: <T = any>(url: string, data?: any, config?: RequestConfig) => 
+  post: <T = unknown>(url: string, data?: unknown, config?: RequestConfig) => 
     defaultInstance.post<T, T>(url, data, config),
   
-  put: <T = any>(url: string, data?: any, config?: RequestConfig) => 
+  put: <T = unknown>(url: string, data?: unknown, config?: RequestConfig) => 
     defaultInstance.put<T, T>(url, data, config),
   
-  delete: <T = any>(url: string, config?: RequestConfig) => 
+  delete: <T = unknown>(url: string, config?: RequestConfig) => 
     defaultInstance.delete<T, T>(url, config),
   
-  patch: <T = any>(url: string, data?: any, config?: RequestConfig) => 
+  patch: <T = unknown>(url: string, data?: unknown, config?: RequestConfig) => 
     defaultInstance.patch<T, T>(url, data, config),
 };
 
@@ -144,19 +148,19 @@ export const createRequest = (config: CreateAxiosConfig) => {
   const instance = createAxiosInstance(config);
   
   return {
-    get: <T = any>(url: string, config?: RequestConfig) => 
+    get: <T = unknown>(url: string, config?: RequestConfig) => 
       instance.get<T, T>(url, config),
     
-    post: <T = any>(url: string, data?: any, config?: RequestConfig) => 
+    post: <T = unknown>(url: string, data?: unknown, config?: RequestConfig) => 
       instance.post<T, T>(url, data, config),
     
-    put: <T = any>(url: string, data?: any, config?: RequestConfig) => 
+    put: <T = unknown>(url: string, data?: unknown, config?: RequestConfig) => 
       instance.put<T, T>(url, data, config),
     
-    delete: <T = any>(url: string, config?: RequestConfig) => 
+    delete: <T = unknown>(url: string, config?: RequestConfig) => 
       instance.delete<T, T>(url, config),
     
-    patch: <T = any>(url: string, data?: any, config?: RequestConfig) => 
+    patch: <T = unknown>(url: string, data?: unknown, config?: RequestConfig) => 
       instance.patch<T, T>(url, data, config),
   };
 };

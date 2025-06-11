@@ -157,7 +157,7 @@ export class PrefixedRedisOperations {
   }
 
   // 事件监听器代理
-  on(event: string, listener: (...args: any[]) => void): this {
+  on(event: string, listener: (...args: unknown[]) => void): this {
     this.client.on(event, listener);
     return this;
   }
