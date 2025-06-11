@@ -5,24 +5,127 @@ import {
   FaCaretUp,
   FaCaretDown,
   FaNetworkWired,
+  FaChartLine,
+  FaCoins,
+  FaExchangeAlt,
+  FaChartPie,
 } from "react-icons/fa";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import MoreDetailsCard from "@/components/MoreDetailsCard";
+import KaiaLoading from "@/components/KaiaLoading";
 
 interface StatCardProps {
   title: string;
   value: string | number;
   change?: string;
   trend: "up" | "down" | "flat";
+  customIcon?: {
+    icon: React.ReactNode;
+    bgColor?: string;
+    iconColor?: string;
+  };
 }
 
-const StatCard: React.FC<StatCardProps> = ({ title, value, change, trend }) => {
+// 格式化数字为带单位的字符串
+const formatNumber = (
+  value: number | string | undefined | null,
+  decimals: number = 2,
+  options: {
+    prefix?: string;
+    suffix?: string;
+    unit?: "short" | "long";
+    isPercentage?: boolean;
+  } = {}
+) => {
+  // 处理 undefined 或 null
+  if (value === undefined || value === null) {
+    return "0";
+  }
+
+  const {
+    prefix = "",
+    suffix = "",
+    unit = "short",
+    isPercentage = false,
+  } = options;
+
+  // 转换为数字
+  const num = typeof value === "string" ? parseFloat(value) : value;
+
+  // 如果输入无效，返回0
+  if (isNaN(num)) return "0";
+
+  // 如果是百分比且数值小于1，直接返回百分比格式
+  if (isPercentage && Math.abs(num) < 1) {
+    return `${(num * 100).toFixed(decimals)}%`;
+  }
+
+  // 如果数值小于1且不是百分比，直接返回格式化后的小数
+  if (Math.abs(num) < 1 && !isPercentage) {
+    return `${prefix}${num.toFixed(decimals)}${suffix}`;
+  }
+
+  // 定义单位
+  const units =
+    unit === "short"
+      ? ["", "K", "M", "B", "T", "Qa", "Qi"]
+      : [
+          "",
+          "Thousand",
+          "Million",
+          "Billion",
+          "Trillion",
+          "Quadrillion",
+          "Quintillion",
+        ];
+
+  // 计算单位索引
+  const k = 1000;
+  const magnitude = Math.floor(Math.log(Math.abs(num)) / Math.log(k));
+  const unitIndex = Math.min(magnitude, units.length - 1);
+
+  // 计算缩放后的值
+  const scaled = num / Math.pow(k, unitIndex);
+
+  // 格式化数字，保留指定小数位
+  const formatted = scaled.toFixed(decimals);
+
+  // 移除末尾多余的0
+  const trimmed = formatted.replace(/\.?0+$/, "");
+
+  // 组合结果
+  return `${prefix}${trimmed}${units[unitIndex]}${suffix}`;
+};
+
+// 使用示例：
+// formatNumber(1000) => "1K"
+// formatNumber(1500, 1) => "1.5K"
+// formatNumber(1000000, 2, { prefix: '$' }) => "$1M"
+// formatNumber(1000000, 2, { unit: 'long' }) => "1Million"
+// formatNumber(1000000, 2, { prefix: '$', suffix: ' USD' }) => "$1M USD"
+// formatNumber(0.15, 2, { isPercentage: true }) => "15%"
+// formatNumber(0.0015, 2, { isPercentage: true }) => "0.15%"
+// formatNumber(0.1254) => "0.12"
+// formatNumber(0.1254, 3) => "0.125"
+
+const StatCard: React.FC<StatCardProps> = ({
+  title,
+  value,
+  change,
+  trend,
+  customIcon,
+}) => {
   // 选择图标和颜色
   let Icon = MdTrendingFlat;
   let iconBg = "bg-gray-100";
   let iconColor = "text-gray-400";
-  if (trend === "up") {
+
+  if (customIcon) {
+    Icon = () => customIcon.icon;
+    iconBg = customIcon.bgColor || iconBg;
+    iconColor = customIcon.iconColor || iconColor;
+  } else if (trend === "up") {
     Icon = FiTrendingUp;
     iconBg = "bg-green-100";
     iconColor = "text-green-600";
@@ -69,53 +172,207 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, change, trend }) => {
   );
 };
 
+const PriceShowSkeleton = () => (
+  <div className="flex items-end gap-3">
+    <div className="h-10 w-32 bg-gray-200 rounded animate-pulse" />
+    <div className="h-6 w-16 bg-gray-200 rounded animate-pulse" />
+  </div>
+);
+
 export default function StatsOverview() {
   const [loading, setLoading] = useState(true);
+  const [blockHeight, setBlockHeight] = useState<number>();
+  const [timer, setTimer] = useState<NodeJS.Timeout>();
+  const [networkStats, setNetworkStats] = useState<{
+    nodes: number;
+    avgBlockTime: number;
+    avgBlockTime24h: number;
+    avgTxCount24h: number;
+    totalFees: number;
+  }>();
+  const [networkLoading, setNetworkLoading] = useState(true);
+  const [marketLoading, setMarketLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(true);
+  const [marketData, setMarketData] = useState<any>();
+
+  useEffect(() => {
+    const fetchNetworkStats = async () => {
+      try {
+        setNetworkLoading(true);
+        const response = await fetch("/api/stats/network");
+        const data = await response.json();
+        console.log("Network Stats:", data);
+        const { latestBlock, blocks, totalFees } = data.data;
+
+        // 计算平均出块时间
+        const blockTimes = blocks.results
+          .slice(0, -1)
+          .map((block: any, index: number) => {
+            const currentTime = new Date(block.datetime).getTime();
+            const nextTime = new Date(
+              blocks.results[index + 1].datetime
+            ).getTime();
+            return (currentTime - nextTime) / 1000; // 转换为秒
+          });
+
+        const avgBlockTime =
+          blockTimes.reduce((acc: number, time: number) => acc + time, 0) /
+          blockTimes.length;
+
+        setBlockHeight(latestBlock.block_id);
+        setNetworkStats({
+          nodes: latestBlock.block_committee.validators.length,
+          avgBlockTime: Math.round(avgBlockTime * 100) / 100, // 保留两位小数
+          avgBlockTime24h: Math.round(avgBlockTime * 100) / 100,
+          totalFees: totalFees.result * 1,
+          avgTxCount24h:
+            blocks.results.reduce(
+              (acc: number, block: any) => acc + block.total_transaction_count,
+              0
+            ) / blocks.results.length,
+        });
+      } catch (error) {
+        console.error("Failed to fetch network stats:", error);
+      } finally {
+        setNetworkLoading(false);
+      }
+    };
+
+    fetchNetworkStats();
+  }, []);
+
+  useEffect(() => {
+    const fetchMarketStats = async () => {
+      try {
+        setMarketLoading(true);
+        setShowLoading(true);
+        const response = await fetch("/api/stats/market");
+        const data = await response.json();
+        console.log("Market Stats:", data);
+
+        if (!data.success || !data.data?.market_data) {
+          throw new Error("Invalid market data");
+        }
+
+        const { market_data } = data.data;
+        const price_change_24h_in_percentage = market_data
+          .price_change_24h_in_currency?.usd
+          ? (market_data.price_change_24h_in_currency.usd /
+              market_data.current_price.usd) *
+            100
+          : 0;
+
+        setMarketData({
+          price: {
+            current: formatNumber(market_data.current_price?.usd, 2),
+            change: formatNumber(price_change_24h_in_percentage, 2) + "%",
+            trend: price_change_24h_in_percentage > 0 ? "up" : "down",
+          },
+          market: [
+            {
+              title: "市值",
+              value: formatNumber(market_data.market_cap?.usd, 2, {
+                prefix: "$",
+              }),
+              change:
+                formatNumber(market_data.market_cap_change_percentage_24h, 2) +
+                "%",
+              trend:
+                market_data.market_cap_change_percentage_24h > 0
+                  ? "up"
+                  : "down",
+            },
+            {
+              title: "24小时交易量",
+              value: formatNumber(market_data.total_volume?.usd, 2, {
+                prefix: "$",
+              }),
+              customIcon: {
+                icon: <FaExchangeAlt />,
+                bgColor: "bg-purple-100",
+                iconColor: "text-purple-600",
+              },
+            },
+            {
+              title: "流通供应量",
+              value: formatNumber(market_data.circulating_supply, 2, {
+                suffix: " KAIA",
+              }),
+              customIcon: {
+                icon: <FaCoins />,
+                bgColor: "bg-yellow-100",
+                iconColor: "text-yellow-600",
+              },
+            },
+            {
+              title: "日交易量/市值",
+              value:
+                formatNumber(
+                  market_data.total_volume?.usd && market_data.market_cap?.usd
+                    ? (market_data.total_volume.usd /
+                        market_data.market_cap.usd) *
+                        100
+                    : 0,
+                  2,
+                  {
+                    isPercentage: true,
+                  }
+                ) + "%",
+              customIcon: {
+                icon: <FaChartPie />,
+                bgColor: "bg-indigo-100",
+                iconColor: "text-indigo-600",
+              },
+            },
+          ],
+        });
+      } catch (error) {
+        console.error("Failed to fetch market stats:", error);
+      } finally {
+        setMarketLoading(false);
+      }
+    };
+
+    fetchMarketStats();
+  }, []);
+
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Demo数据
-  const stats = [
-    {
-      title: "市值",
-      value: "$743.71M",
-      change: "15.88%",
-      trend: "up" as const,
-    },
-    {
-      title: "24小时交易量",
-      value: "$85.55M",
-      change: "1179.96%",
-      trend: "up" as const,
-    },
-    {
-      title: "流通供应量",
-      value: "5.8B KAIA",
-      change: "0.0%",
-      trend: "flat" as const,
-    },
-    {
-      title: "日交易量/市值",
-      value: "10.19%",
-      change: "0.1%",
-      trend: "down" as const,
-    },
-  ];
+  useEffect(() => {
+    if (blockHeight === undefined || timer) return;
+    const tempTimer = setInterval(() => {
+      setBlockHeight((prev) => {
+        if (prev === undefined) return prev;
+        return prev + 1;
+      });
+    }, 1000);
+    setTimer(tempTimer);
+  }, [blockHeight]);
 
-  // Kaia价格和涨幅demo
-  const kaiaPrice = 0.1231;
-  const kaiaChange = 15.2;
+  useEffect(() => {
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, []);
 
-  // 当前区块高度动态增长
-  const [blockHeight, setBlockHeight] = useState(187419980);
+  const handleLoadingComplete = () => {
+    setShowLoading(false);
+  };
 
   return (
     <div>
-
+      {/* {showLoading && (
+        <KaiaLoading
+          unlock={marketLoading}
+          onAnimationComplete={handleLoadingComplete}
+        />
+      )} */}
       {/* KaiaChain Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 items-stretch">
+        
         <div className="flex items-center min-w-0 md:col-span-1">
           {/* logo */}
           <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mr-3 overflow-hidden">
@@ -134,15 +391,20 @@ export default function StatsOverview() {
                 KAIA Price
               </span>
             </div>
-            <div className="flex items-end gap-3">
-              <span className="text-3xl md:text-4xl font-extrabold text-gray-900 ">
-                ${kaiaPrice}
-              </span>
-              <span className="text-lg font-bold text-green-600 flex items-center gap-1">
-                <FaCaretUp />
-                {kaiaChange}%
-              </span>
-            </div>
+            {/* Kaia Price Show */}
+            {marketLoading ? (
+              <PriceShowSkeleton />
+            ) : (
+              <div className="flex items-end gap-3">
+                <span className="text-3xl md:text-4xl font-extrabold text-gray-900 ">
+                  ${marketData?.price?.current}
+                </span>
+                <span className="text-lg font-bold text-green-600 flex items-center gap-1">
+                  <FaCaretUp />
+                  {marketData?.price?.change}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -151,6 +413,7 @@ export default function StatsOverview() {
             href="https://kaiascan.io/"
             linkText="kaiascan"
             className="h-full"
+            loading={networkLoading}
           >
             <div className="flex-1 min-w-0 flex items-stretch w-full rounded-2xl p-4 flex-col h-full bg-white text-gray-900 shadow border border-gray-100">
               <div className="flex items-center justify-between  mb-5">
@@ -178,25 +441,35 @@ export default function StatsOverview() {
                     <span className="text-sm text-gray-500 mb-1">
                       共识节点数
                     </span>
-                    <span className="text-2xl font-bold">41</span>
+                    <span className="text-2xl font-bold">
+                      {networkStats?.nodes}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-500 mb-1">
-                      平均出块时间<sup className="ml-0.5">(1小时)</sup>
+                      平均出块时间<sup className="ml-0.5"></sup>
                     </span>
-                    <span className="text-2xl font-bold">1.0s</span>
+                    <span className="text-2xl font-bold">
+                      {networkStats?.avgBlockTime}s
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-500 mb-1">
-                      平均出块时间<sup className="ml-0.5">(24小时)</sup>
+                      昨日用户交易费<sup className="ml-0.5"></sup>
                     </span>
-                    <span className="text-2xl font-bold">1.0s</span>
+                    <span className="text-2xl font-bold">
+                      {formatNumber(networkStats?.totalFees, 2, {
+                        suffix: " KAIA",
+                      })}
+                    </span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-500 mb-1">
-                      区块平均交易数<sup className="ml-0.5">(24小时)</sup>
+                      区块平均交易数<sup className="ml-0.5">(最近20个区块)</sup>
                     </span>
-                    <span className="text-2xl font-bold">13.2</span>
+                    <span className="text-2xl font-bold">
+                      {networkStats?.avgTxCount24h}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -207,9 +480,10 @@ export default function StatsOverview() {
       <MoreDetailsCard
         href="https://www.coingecko.com/en/coins/kaia"
         linkText="coingecko"
+        loading={marketLoading}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[90px]">
+          {marketData?.market.map((stat: any, index: number) => (
             <StatCard key={index} {...stat} />
           ))}
         </div>
