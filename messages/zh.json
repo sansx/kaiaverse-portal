@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "首页",
+    "stats": "统计",
+    "tools": "工具",
+    "events": "活动",
+    "resources": "资源"
+  },
+  "home": {
+    "title": "Kaiaverse Portal | 您通往Kaia生态系统的AI优先网关",
+    "description": "Kaiaverse Portal是您通往Kaia生态系统的综合网关，为下一代数字创新提供AI驱动的工具、资源和洞察。",
+    "welcome": "欢迎来到Kaiaverse Portal",
+    "subtitle": "您探索Kaia生态系统的AI智能门户",
+    "features": {
+      "tools": {
+        "title": "工具与服务",
+        "description": "访问Kaia生态系统工具，包括水龙头、质押、交换和借贷服务"
+      },
+      "events": {
+        "title": "活动日历",
+        "description": "了解全球Kaia生态系统活动和动态的最新信息"
+      },
+      "resources": {
+        "title": "资源中心",
+        "description": "探索全面的资源、文档和社区链接"
+      }
+    },
+    "learnMore": "了解更多"
+  },
+  "stats": {
+    "title": "KaiaChain 生态数据统计",
+    "pageTitle": "KaiaChain Stats | KaiaVerse Portal",
+    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard"
+  },
+  "tools": {
+    "title": "Kaia 工具与服务",
+    "faucet": {
+      "name": "Kaia Faucet",
+      "description": "获取测试网代币"
+    },
+    "staking": {
+      "name": "Staking",
+      "description": "质押Kaia代币获取收益"
+    },
+    "swap": {
+      "name": "Swap",
+      "description": "在Kaia生态系统中交换代币"
+    },
+    "lending": {
+      "name": "Lending",
+      "description": "Kaia生态系统中的借贷服务"
+    },
+    "useNow": "立即使用"
+  },
+  "events": {
+    "title": "Kaia 活动日历",
+    "allEvents": "全部活动",
+    "upcoming": "即将开始",
+    "ongoing": "进行中",
+    "past": "已结束",
+    "loading": "正在加载活动数据...",
+    "error": "加载活动数据失败",
+    "noEvents": "暂无符合条件的活动",
+    "registerNow": "报名参加",
+    "viewDetails": "查看详情",
+    "inProgress": "正在进行",
+    "pastEvents": "过往活动",
+    "calendarTitle": "未来活动日历",
+    "clickCalendar": "点击日历中的活动查看详情"
+  },
+  "aiQuery": {
+    "placeholder": "询问关于Kaia生态的任何问题...",
+    "queryButton": "查询",
+    "querying": "查询中...",
+    "responseTitle": "AI助手回应：",
+    "sampleResponse": "这是一个示例响应。在实际实现中，这里将连接到Kaiaverse AI后端服务。",
+    "suggestions": [
+      {
+        "question": "如何开始使用Kaia进行开发？",
+        "description": "了解开发环境设置和基础概念"
+      },
+      {
+        "question": "Kaia生态系统有哪些主要组件？",
+        "description": "探索Kaia的核心功能和服务"
+      },
+      {
+        "question": "如何参与Kaia的质押计划？",
+        "description": "了解质押机制和收益模式"
+      },
+      {
+        "question": "最近的Kaia黑客松活动信息？",
+        "description": "获取最新活动详情和报名方式"
+      }
+    ]
+  },
+  "resources": {
+    "title": "Kaia 资源中心",
+    "categories": {
+      "development": "开发文档",
+      "community": "社区资源",
+      "learning": "学习资源"
+    },
+    "docs": {
+      "quickStart": {
+        "title": "快速开始指南",
+        "description": "从这里开始了解如何使用Kaia进行开发"
+      },
+      "devTools": {
+        "title": "开发工具文档",
+        "description": "Kaia开发工具文档"
+      },
+      "sdk": {
+        "title": "SDK文档",
+        "description": "各种编程语言的SDK使用指南"
+      },
+      "whitepaper": {
+        "title": "白皮书",
+        "description": "Kaia白皮书"
+      }
+    },
+    "community": {
+      "discord": {
+        "title": "Discord社区",
+        "description": "加入我们的Discord社区进行交流"
+      },
+      "forum": {
+        "title": "开发者论坛",
+        "description": "技术讨论和问题解答"
+      },
+      "github": {
+        "title": "Github仓库",
+        "description": "查看和贡献代码"
+      }
+    },
+    "learning": {
+      "tutorials": {
+        "title": "教程中心",
+        "description": "学习如何构建Kaia应用的教程集合"
+      },
+      "examples": {
+        "title": "示例项目",
+        "description": "参考实现的示例项目"
+      },
+      "videos": {
+        "title": "视频教程",
+        "description": "观看视频学习Kaia开发"
+      }
+    },
+    "visitResource": "访问资源"
+  },
+  "common": {
+    "language": "语言",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功"
+  }
+} 

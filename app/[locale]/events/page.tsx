@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 // 定义事件数据类型
 interface Event {
@@ -22,6 +23,7 @@ interface EventWithStatus extends Event {
 }
 
 export default function EventsPage() {
+  const t = useTranslations('events');
   const [activeFilter, setActiveFilter] = useState('all');
   const [events, setEvents] = useState<EventWithStatus[]>([]);
   const [loading, setLoading] = useState(true);
@@ -131,18 +133,18 @@ export default function EventsPage() {
     if (endDate) {
       // 有结束时间的活动
       if (now < startDate) {
-        return '即将开始';
+        return 'upcoming';
       } else if (now >= startDate && now <= endDate) {
-        return '进行中';
+        return 'ongoing';
       } else {
-        return '已结束';
+        return 'past';
       }
     } else {
       // 只有开始时间的活动
       if (now < startDate) {
-        return '即将开始';
+        return 'upcoming';
       } else {
-        return '已结束';
+        return 'past';
       }
     }
   };
@@ -201,19 +203,19 @@ export default function EventsPage() {
   }, [events]);
 
   const filters = [
-    { id: 'all', name: '全部活动' },
-    { id: 'upcoming', name: '即将开始' },
-    { id: 'in_progress', name: '进行中' },
-    { id: 'completed', name: '已结束' }
+    { id: 'all', name: t('allEvents') },
+    { id: 'upcoming', name: t('upcoming') },
+    { id: 'in_progress', name: t('ongoing') },
+    { id: 'completed', name: t('past') }
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case '已结束':
+      case 'past':
         return 'text-gray-600';
-      case '进行中':
+      case 'ongoing':
         return 'text-green-600';
-      case '即将开始':
+      case 'upcoming':
         return 'text-blue-600';
       default:
         return 'text-gray-600';
@@ -221,17 +223,26 @@ export default function EventsPage() {
   };
 
   const getStatusText = (status: string) => {
-    return status;
+    switch (status) {
+      case 'past':
+        return t('past');
+      case 'ongoing':
+        return t('ongoing');
+      case 'upcoming':
+        return t('upcoming');
+      default:
+        return status;
+    }
   };
 
   // 状态映射函数
   const mapStatusForFilter = (status: string) => {
     switch (status) {
-      case '已结束':
+      case 'past':
         return 'completed';
-      case '进行中':
+      case 'ongoing':
         return 'in_progress';
-      case '即将开始':
+      case 'upcoming':
         return 'upcoming';
       default:
         return 'other';
@@ -244,7 +255,7 @@ export default function EventsPage() {
 
   // 渲染注册按钮
   const renderRegistrationButton = (event: EventWithStatus) => {
-    const isDisabled = event.status === '已结束';
+    const isDisabled = event.status === 'past';
     
     // 如果活动已结束，显示查看详情按钮
     if (isDisabled) {
@@ -255,7 +266,7 @@ export default function EventsPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          查看详情
+          {t('viewDetails')}
         </a>
       );
     }
@@ -269,7 +280,7 @@ export default function EventsPage() {
           data-luma-action="checkout"
           data-luma-event-id={event.lumaEventId}
         >
-          {event.status === '进行中' ? '正在进行' : '报名参加'}
+          {event.status === 'ongoing' ? t('inProgress') : t('registerNow')}
         </button>
       );
     }
@@ -279,14 +290,14 @@ export default function EventsPage() {
       <a
         href={event.registrationLink}
         className={`ml-4 px-4 py-2 rounded-md ${
-          event.status === '进行中'
+          event.status === 'ongoing'
             ? 'bg-green-600 hover:bg-green-700'
             : 'bg-blue-600 hover:bg-blue-700'
         } text-white transition-colors`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        {event.status === '进行中' ? '正在进行' : '报名参加'}
+        {event.status === 'ongoing' ? t('inProgress') : t('registerNow')}
       </a>
     );
   };
@@ -297,7 +308,7 @@ export default function EventsPage() {
       <div className="py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-center items-center h-64">
-            <div className="text-lg text-gray-600">正在加载活动数据...</div>
+            <div className="text-lg text-gray-600">{t('loading')}</div>
           </div>
         </div>
       </div>
@@ -310,7 +321,7 @@ export default function EventsPage() {
       <div className="py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-center items-center h-64">
-            <div className="text-lg text-red-600">加载活动数据失败: {error}</div>
+            <div className="text-lg text-red-600">{t('error')}: {error}</div>
           </div>
         </div>
       </div>
@@ -322,7 +333,7 @@ export default function EventsPage() {
       <div className="max-w-7xl mx-auto px-4">
         {/* 页面标题和筛选器 */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Kaia 活动日历</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <div className="flex space-x-4">
             {filters.map((filter) => (
               <button
@@ -349,7 +360,7 @@ export default function EventsPage() {
                 <div 
                   key={`${event.title}-${index}`} 
                   className={`rounded-lg shadow-md p-6 ${
-                    event.status === '已结束' 
+                    event.status === 'past' 
                       ? 'bg-gray-50 border-l-4 border-gray-400' 
                       : 'bg-white'
                   }`}
@@ -358,7 +369,7 @@ export default function EventsPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className={`text-xl font-semibold ${
-                          event.status === '已结束' ? 'text-gray-700' : 'text-gray-900'
+                          event.status === 'past' ? 'text-gray-700' : 'text-gray-900'
                         }`}>
                           {event.title}
                         </h3>
@@ -370,35 +381,35 @@ export default function EventsPage() {
                             Luma
                           </span>
                         )}
-                        {event.status === '已结束' && (
+                        {event.status === 'past' && (
                           <span className="px-2 py-1 bg-gray-200 text-gray-600 text-xs rounded-full">
-                            过往活动
+                            {t('pastEvents')}
                           </span>
                         )}
                       </div>
                       <p className={`mb-2 ${
-                        event.status === '已结束' ? 'text-gray-500' : 'text-gray-600'
+                        event.status === 'past' ? 'text-gray-500' : 'text-gray-600'
                       }`}>
                         📅 {event.date}
                       </p>
                       <p className={`mb-2 ${
-                        event.status === '已结束' ? 'text-gray-500' : 'text-gray-600'
+                        event.status === 'past' ? 'text-gray-500' : 'text-gray-600'
                       }`}>
                         📍 {event.location}
                       </p>
                       <p className={`mb-2 ${
-                        event.status === '已结束' ? 'text-gray-500' : 'text-gray-600'
+                        event.status === 'past' ? 'text-gray-500' : 'text-gray-600'
                       }`}>
                         🏢 {event.hostBy}
                       </p>
                       <p className={`mb-4 ${
-                        event.status === '已结束' ? 'text-gray-600' : 'text-gray-700'
+                        event.status === 'past' ? 'text-gray-600' : 'text-gray-700'
                       }`}>
                         {event.description}
                       </p>
                       <div className="inline-block">
                         <span className={`px-2 py-1 text-xs rounded-full ${
-                          event.status === '已结束' 
+                          event.status === 'past' 
                             ? 'bg-gray-100 text-gray-600' 
                             : 'bg-blue-100 text-blue-800'
                         }`}>
@@ -413,7 +424,7 @@ export default function EventsPage() {
             </div>
             {filteredEvents.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">暂无符合条件的活动</p>
+                <p className="text-gray-500 text-lg">{t('noEvents')}</p>
               </div>
             )}
           </div>
@@ -422,7 +433,7 @@ export default function EventsPage() {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-4 text-gray-900">未来活动日历</h2>
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">{t('calendarTitle')}</h2>
                 <div className="w-full">
                   <iframe
                     src="https://lu.ma/embed/calendar/cal-Zxd3NPs07srlXc3/events"
@@ -441,7 +452,7 @@ export default function EventsPage() {
                   />
                 </div>
                 <p className="text-sm text-gray-500 mt-3 text-center">
-                  点击日历中的活动查看详情
+                  {t('clickCalendar')}
                 </p>
               </div>
             </div>

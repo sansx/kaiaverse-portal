@@ -1,26 +1,30 @@
+import { useTranslations } from 'next-intl';
+
 export default function ToolsPage() {
+  const t = useTranslations('tools');
+  
   const tools = [
     {
-      name: "Kaia Faucet",
-      description: "获取测试网代币",
+      name: t('faucet.name'),
+      description: t('faucet.description'),
       link: "#",
       icon: "💧"
     },
     {
-      name: "Staking",
-      description: "质押Kaia代币获取收益",
+      name: t('staking.name'),
+      description: t('staking.description'),
       link: "#",
       icon: "🔒"
     },
     {
-      name: "Swap",
-      description: "在Kaia生态系统中交换代币",
+      name: t('swap.name'),
+      description: t('swap.description'),
       link: "#",
       icon: "🔄"
     },
     {
-      name: "Lending",
-      description: "Kaia生态系统中的借贷服务",
+      name: t('lending.name'),
+      description: t('lending.description'),
       link: "#",
       icon: "💰"
     }
@@ -29,7 +33,7 @@ export default function ToolsPage() {
   return (
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-8">Kaia 工具与服务</h1>
+        <h1 className="text-3xl font-bold mb-8">{t('title')}</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {tools.map((tool) => (
             <div key={tool.name} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
@@ -40,7 +44,7 @@ export default function ToolsPage() {
                 href={tool.link}
                 className="text-blue-600 hover:text-blue-800 font-medium"
               >
-                立即使用 →
+                {t('useNow')} →
               </a>
             </div>
           ))}
