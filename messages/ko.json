@@ -1,0 +1,64 @@
+{
+  "Navigation": {
+    "home": "홈",
+    "stats": "통계",
+    "tools": "도구",
+    "resources": "리소스",
+    "events": "이벤트"
+  },
+  "HomePage": {
+    "title": "Kaia 포털에 오신 것을 환영합니다",
+    "subtitle": "Kaia 생태계로의 관문",
+    "description": "DeFi 프로토콜부터 게임 플랫폼까지, 활기찬 Kaia 블록체인 세계를 탐험하고 포괄적인 생태계에서 무한한 가능성을 발견하세요.",
+    "exploreEcosystem": "생태계 탐험",
+    "viewStats": "통계 보기",
+    "quickLinks": "빠른 링크",
+    "latestNews": "최신 뉴스",
+    "communityHighlights": "커뮤니티 하이라이트"
+  },
+  "Stats": {
+    "title": "Kaia 네트워크 통계",
+    "marketCap": "시가총액",
+    "volume24h": "24시간 거래량",
+    "circulatingSupply": "유통 공급량",
+    "volumeToMarketCap": "거래량/시가총액",
+    "price": "가격",
+    "change24h": "24시간 변화",
+    "loading": "통계를 불러오는 중...",
+    "error": "통계 로드 실패",
+    "retry": "다시 시도"
+  },
+  "Tools": {
+    "title": "개발자 도구",
+    "description": "Kaia에서 구축하기 위한 필수 도구",
+    "comingSoon": "곧 출시"
+  },
+  "Resources": {
+    "title": "리소스",
+    "description": "문서, 가이드 및 학습 자료",
+    "comingSoon": "곧 출시"
+  },
+  "Events": {
+    "title": "이벤트",
+    "description": "다가오는 이벤트 및 커뮤니티 모임",
+    "comingSoon": "곧 출시"
+  },
+  "Common": {
+    "loading": "로딩 중...",
+    "error": "오류가 발생했습니다",
+    "retry": "다시 시도",
+    "viewMore": "더 보기",
+    "learnMore": "자세히 알아보기",
+    "getStarted": "시작하기",
+    "documentation": "문서",
+    "community": "커뮤니티",
+    "support": "지원"
+  },
+  "Footer": {
+    "description": "블록체인 기술의 미래를 구축합니다",
+    "quickLinks": "빠른 링크",
+    "community": "커뮤니티",
+    "developers": "개발자",
+    "copyright": "© 2024 Kaia Foundation. 모든 권리 보유."
+  }
+} 

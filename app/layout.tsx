@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA_TRACKING_ID } from "./lib/gtag";
 
@@ -55,13 +53,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Navbar />
-        <main className="container mx-auto px-4 flex-grow">
-          {children}
-        </main>
-        <Footer />
+        {children}
         <GoogleAnalytics gaId={GA_TRACKING_ID} />
       </body>
     </html>

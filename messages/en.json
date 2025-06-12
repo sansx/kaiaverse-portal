@@ -1,0 +1,64 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "stats": "Stats",
+    "tools": "Tools",
+    "resources": "Resources",
+    "events": "Events"
+  },
+  "HomePage": {
+    "title": "Welcome to Kaia Portal",
+    "subtitle": "Your Gateway to the Kaia Ecosystem",
+    "description": "Explore the vibrant world of Kaia blockchain - from DeFi protocols to gaming platforms, discover endless possibilities in our comprehensive ecosystem.",
+    "exploreEcosystem": "Explore Ecosystem",
+    "viewStats": "View Stats",
+    "quickLinks": "Quick Links",
+    "latestNews": "Latest News",
+    "communityHighlights": "Community Highlights"
+  },
+  "Stats": {
+    "title": "Kaia Network Statistics",
+    "marketCap": "Market Cap",
+    "volume24h": "24h Volume",
+    "circulatingSupply": "Circulating Supply",
+    "volumeToMarketCap": "Volume/Market Cap",
+    "price": "Price",
+    "change24h": "24h Change",
+    "loading": "Loading statistics...",
+    "error": "Failed to load statistics",
+    "retry": "Retry"
+  },
+  "Tools": {
+    "title": "Developer Tools",
+    "description": "Essential tools for building on Kaia",
+    "comingSoon": "Coming Soon"
+  },
+  "Resources": {
+    "title": "Resources",
+    "description": "Documentation, guides, and learning materials",
+    "comingSoon": "Coming Soon"
+  },
+  "Events": {
+    "title": "Events",
+    "description": "Upcoming events and community gatherings",
+    "comingSoon": "Coming Soon"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "viewMore": "View More",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "documentation": "Documentation",
+    "community": "Community",
+    "support": "Support"
+  },
+  "Footer": {
+    "description": "Building the future of blockchain technology",
+    "quickLinks": "Quick Links",
+    "community": "Community",
+    "developers": "Developers",
+    "copyright": "© 2024 Kaia Foundation. All rights reserved."
+  }
+} 

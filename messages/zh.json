@@ -1,0 +1,64 @@
+{
+  "Navigation": {
+    "home": "首页",
+    "stats": "统计数据",
+    "tools": "工具",
+    "resources": "资源",
+    "events": "活动"
+  },
+  "HomePage": {
+    "title": "欢迎来到 Kaia 门户",
+    "subtitle": "您通往 Kaia 生态系统的门户",
+    "description": "探索充满活力的 Kaia 区块链世界 - 从 DeFi 协议到游戏平台，在我们全面的生态系统中发现无限可能。",
+    "exploreEcosystem": "探索生态系统",
+    "viewStats": "查看统计",
+    "quickLinks": "快速链接",
+    "latestNews": "最新资讯",
+    "communityHighlights": "社区亮点"
+  },
+  "Stats": {
+    "title": "Kaia 网络统计",
+    "marketCap": "市值",
+    "volume24h": "24小时交易量",
+    "circulatingSupply": "流通供应量",
+    "volumeToMarketCap": "交易量/市值",
+    "price": "价格",
+    "change24h": "24小时变化",
+    "loading": "正在加载统计数据...",
+    "error": "加载统计数据失败",
+    "retry": "重试"
+  },
+  "Tools": {
+    "title": "开发者工具",
+    "description": "在 Kaia 上构建的必备工具",
+    "comingSoon": "即将推出"
+  },
+  "Resources": {
+    "title": "资源",
+    "description": "文档、指南和学习材料",
+    "comingSoon": "即将推出"
+  },
+  "Events": {
+    "title": "活动",
+    "description": "即将举行的活动和社区聚会",
+    "comingSoon": "即将推出"
+  },
+  "Common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "retry": "重试",
+    "viewMore": "查看更多",
+    "learnMore": "了解更多",
+    "getStarted": "开始使用",
+    "documentation": "文档",
+    "community": "社区",
+    "support": "支持"
+  },
+  "Footer": {
+    "description": "构建区块链技术的未来",
+    "quickLinks": "快速链接",
+    "community": "社区",
+    "developers": "开发者",
+    "copyright": "© 2024 Kaia Foundation. 保留所有权利。"
+  }
+} 
