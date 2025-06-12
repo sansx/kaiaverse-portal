@@ -30,7 +30,34 @@
   "stats": {
     "title": "KaiaChain Ecosystem Statistics",
     "pageTitle": "KaiaChain Stats | KaiaVerse Portal",
-    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard"
+    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard",
+    "overview": {
+      "kaiaPrice": "KAIA Price",
+      "kaiaLogo": "Kaia Logo",
+      "marketCap": "Market Cap",
+      "volume24h": "24h Trading Volume",
+      "circulatingSupply": "Circulating Supply",
+      "volumeToMarketCap": "Volume/Market Cap",
+      "marketCapDescription": "Current market capitalization",
+      "volume24hDescription": "Total trading volume in the past 24 hours",
+      "circulatingSupplyDescription": "Current number of tokens in circulation",
+      "volumeToMarketCapDescription": "Trading activity indicator",
+      "mainnet": "Mainnet",
+      "currentBlockHeight": "Current Block Height",
+      "consensusNodes": "Consensus Nodes",
+      "avgBlockTime1h": "Avg Block Time",
+      "avgBlockTime24h": "Avg Block Time",
+      "avgTxCount24h": "Avg Tx Count per Block",
+      "dailyUserFees": "Daily User Fees",
+      "avgBlockTime1hSuffix": "(1 hour)",
+      "avgBlockTime24hSuffix": "(24 hours)",
+      "avgTxCount24hSuffix": "(24 hours)",
+      "recentBlocksSuffix": "(recent 20 blocks)"
+    },
+    "charts": {
+      "kaiaWave": "Kaia Wave Data",
+      "officialDashboard": "Kaia Official Dashboard"
+    }
   },
   "tools": {
     "title": "Kaia Tools & Services",
@@ -152,6 +179,9 @@
     "language": "Language",
     "loading": "Loading...",
     "error": "Error",
-    "success": "Success"
+    "success": "Success",
+    "dataSource": "Data Source:",
+    "viewMoreDetails": "View More Details",
+    "kaiaLoading": "Kaia Loading"
   }
 } 

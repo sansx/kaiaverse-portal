@@ -30,7 +30,34 @@
   "stats": {
     "title": "KaiaChain 생태계 통계",
     "pageTitle": "KaiaChain Stats | KaiaVerse Portal",
-    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard"
+    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard",
+    "overview": {
+      "kaiaPrice": "KAIA 가격",
+      "kaiaLogo": "Kaia 로고",
+      "marketCap": "시가총액",
+      "volume24h": "24시간 거래량",
+      "circulatingSupply": "유통 공급량",
+      "volumeToMarketCap": "거래량/시가총액",
+      "marketCapDescription": "현재 시장 총 가치",
+      "volume24hDescription": "지난 24시간 총 거래량",
+      "circulatingSupplyDescription": "현재 유통 중인 토큰 수량",
+      "volumeToMarketCapDescription": "거래 활성도 지표",
+      "mainnet": "메인넷",
+      "currentBlockHeight": "현재 블록 높이",
+      "consensusNodes": "합의 노드 수",
+      "avgBlockTime1h": "평균 블록 시간",
+      "avgBlockTime24h": "평균 블록 시간",
+      "avgTxCount24h": "블록당 평균 거래 수",
+      "dailyUserFees": "일일 사용자 수수료",
+      "avgBlockTime1hSuffix": "(1시간)",
+      "avgBlockTime24hSuffix": "(24시간)",
+      "avgTxCount24hSuffix": "(24시간)",
+      "recentBlocksSuffix": "(최근 20개 블록)"
+    },
+    "charts": {
+      "kaiaWave": "Kaia Wave 데이터",
+      "officialDashboard": "Kaia 공식 대시보드"
+    }
   },
   "tools": {
     "title": "Kaia 도구 및 서비스",
@@ -152,6 +179,9 @@
     "language": "언어",
     "loading": "로딩 중...",
     "error": "오류",
-    "success": "성공"
+    "success": "성공",
+    "dataSource": "데이터 소스:",
+    "viewMoreDetails": "자세히 보기",
+    "kaiaLoading": "Kaia 로딩 중"
   }
 } 

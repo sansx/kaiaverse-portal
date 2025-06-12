@@ -30,7 +30,34 @@
   "stats": {
     "title": "KaiaChain 生态数据统计",
     "pageTitle": "KaiaChain Stats | KaiaVerse Portal",
-    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard"
+    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard",
+    "overview": {
+      "kaiaPrice": "KAIA Price",
+      "kaiaLogo": "Kaia Logo",
+      "marketCap": "市值",
+      "volume24h": "24小时交易量",
+      "circulatingSupply": "流通供应量",
+      "volumeToMarketCap": "日交易量/市值",
+      "marketCapDescription": "当前市场总值",
+      "volume24hDescription": "过去24小时的交易总量",
+      "circulatingSupplyDescription": "当前流通中的代币数量",
+      "volumeToMarketCapDescription": "交易活跃度指标",
+      "mainnet": "主网",
+      "currentBlockHeight": "当前区块高度",
+      "consensusNodes": "共识节点数",
+      "avgBlockTime1h": "平均出块时间",
+      "avgBlockTime24h": "平均出块时间",
+      "avgTxCount24h": "区块平均交易数",
+      "dailyUserFees": "昨日用户交易费",
+      "avgBlockTime1hSuffix": "(1小时)",
+      "avgBlockTime24hSuffix": "(24小时)",
+      "avgTxCount24hSuffix": "(24小时)",
+      "recentBlocksSuffix": "(最近20个区块)"
+    },
+    "charts": {
+      "kaiaWave": "Kaia Wave 数据",
+      "officialDashboard": "Kaia 官方仪表板"
+    }
   },
   "tools": {
     "title": "Kaia 工具与服务",
@@ -152,6 +179,9 @@
     "language": "语言",
     "loading": "加载中...",
     "error": "错误",
-    "success": "成功"
+    "success": "成功",
+    "dataSource": "数据源:",
+    "viewMoreDetails": "查看更多详情",
+    "kaiaLoading": "Kaia 加载中"
   }
 } 

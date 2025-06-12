@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { useTranslations } from "next-intl";
 
 interface MoreDetailsCardProps {
   children: React.ReactNode;
@@ -13,10 +14,12 @@ interface MoreDetailsCardProps {
 const MoreDetailsCard: React.FC<MoreDetailsCardProps> = ({
   children,
   href,
-  linkText = "查看更多详情",
+  linkText,
   className,
   loading,
 }) => {
+  const t = useTranslations('common');
+  
   return (
     <div
       className={`rounded-xl transition-colors duration-200 group w-full ${className} relative hover:-translate-y-0.5`}
@@ -34,7 +37,7 @@ const MoreDetailsCard: React.FC<MoreDetailsCardProps> = ({
           >
             <motion.img
               src="/icons/kaia-kaia-logo.svg"
-              alt="Kaia Loading"
+              alt={t('kaiaLoading')}
               className="w-16 h-16"
               initial={{ y: 0 }}
               animate={{ y: [0, -20, 0], opacity: 1 }}
@@ -67,10 +70,10 @@ const MoreDetailsCard: React.FC<MoreDetailsCardProps> = ({
             >
               <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg hover:bg-blue-50 transition-all duration-200 group">
                 <span className="text-sm text-gray-700 group-hover:text-blue-700">
-                  数据源:
+                  {t('dataSource')}
                 </span>
 
-                {linkText}
+                {linkText || t('viewMoreDetails')}
                 <FaExternalLinkAlt className="w-3 h-3 group-hover:scale-110 transition-transform duration-200" />
               </div>
             </a>

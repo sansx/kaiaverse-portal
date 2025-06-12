@@ -10,8 +10,8 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import MoreDetailsCard from "@/components/MoreDetailsCard";
-import KaiaMarketsTable from "./KaiaMarketsTable";
 
 interface StatCardProps {
   title: string;
@@ -250,73 +250,18 @@ interface MarketData {
 }
 
 export default function StatsOverview() {
+  const t = useTranslations('stats.overview');
+  
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_loading, setLoading] = useState(true);
   const [blockHeight, setBlockHeight] = useState<number>();
   const [timer, setTimer] = useState<NodeJS.Timeout>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_networkStats, setNetworkStats] = useState<{
-    nodes: number;
-    avgBlockTime: number;
-    avgBlockTime24h: number;
-    avgTxCount24h: number;
-    totalFees: number;
-  }>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_networkLoading, setNetworkLoading] = useState(true);
   const [marketLoading, setMarketLoading] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_showLoading, setShowLoading] = useState(true);
   const [marketData, setMarketData] = useState<MarketData>();
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const fetchNetworkStats = async () => {
-      try {
-        setNetworkLoading(true);
-        const response = await fetch("/api/stats/network");
-        const data = await response.json();
-        console.log("Network Stats:", data);
-        const { latestBlock, blocks, totalFees } = data.data;
-
-        // 计算平均出块时间
-        const blockTimes = blocks.results
-          .slice(0, -1)
-          .map((block: unknown, index: number) => {
-            const blockData = block as { datetime: string };
-            const nextBlockData = blocks.results[index + 1] as {
-              datetime: string;
-            };
-            const currentTime = new Date(blockData.datetime).getTime();
-            const nextTime = new Date(nextBlockData.datetime).getTime();
-            return (currentTime - nextTime) / 1000; // 转换为秒
-          });
-
-        const avgBlockTime =
-          blockTimes.reduce((acc: number, time: number) => acc + time, 0) /
-          blockTimes.length;
-
-        setBlockHeight(latestBlock.block_id);
-        setNetworkStats({
-          nodes: latestBlock.block_committee.validators.length,
-          avgBlockTime: Math.round(avgBlockTime * 100) / 100, // 保留两位小数
-          avgBlockTime24h: Math.round(avgBlockTime * 100) / 100,
-          totalFees: totalFees.result * 1,
-          avgTxCount24h:
-            blocks.results.reduce((acc: number, block: unknown) => {
-              const blockData = block as { total_transaction_count: number };
-              return acc + blockData.total_transaction_count;
-            }, 0) / blocks.results.length,
-        });
-      } catch (error) {
-        console.error("Failed to fetch network stats:", error);
-      } finally {
-        setNetworkLoading(false);
-      }
-    };
-
-    // fetchNetworkStats();
-  }, []);
 
   useEffect(() => {
     const fetchMarketStats = async () => {
@@ -360,7 +305,7 @@ export default function StatsOverview() {
           },
           market: [
             {
-              title: "市值",
+              title: t('marketCap'),
               value: formatNumber(market_data.market_cap?.usd, 2, {
                 prefix: "$",
               }),
@@ -373,7 +318,7 @@ export default function StatsOverview() {
                   : "down",
               category: "market",
               importance: "high",
-              description: "当前市场总值",
+              description: t('marketCapDescription'),
               metadata: {
                 source: "coingecko",
                 precision: 2,
@@ -382,13 +327,13 @@ export default function StatsOverview() {
               },
             },
             {
-              title: "24小时交易量",
+              title: t('volume24h'),
               value: formatNumber(market_data.total_volume?.usd, 2, {
                 prefix: "$",
               }),
               category: "trading",
               importance: "high",
-              description: "过去24小时的交易总量",
+              description: t('volume24hDescription'),
               customIcon: {
                 icon: <FaExchangeAlt />,
                 bgColor: "bg-purple-100",
@@ -402,13 +347,13 @@ export default function StatsOverview() {
               },
             },
             {
-              title: "流通供应量",
+              title: t('circulatingSupply'),
               value: formatNumber(market_data.circulating_supply, 2, {
                 suffix: " KAIA",
               }),
               category: "supply",
               importance: "medium",
-              description: "当前流通中的代币数量",
+              description: t('circulatingSupplyDescription'),
               customIcon: {
                 icon: <FaCoins />,
                 bgColor: "bg-yellow-100",
@@ -422,7 +367,7 @@ export default function StatsOverview() {
               },
             },
             {
-              title: "日交易量/市值",
+              title: t('volumeToMarketCap'),
               value:
                 formatNumber(
                   market_data.total_volume?.usd && market_data.market_cap?.usd
@@ -437,7 +382,7 @@ export default function StatsOverview() {
                 ) + "%",
               category: "ratio",
               importance: "medium",
-              description: "交易活跃度指标",
+              description: t('volumeToMarketCapDescription'),
               customIcon: {
                 icon: <FaChartPie />,
                 bgColor: "bg-indigo-100",
@@ -462,7 +407,7 @@ export default function StatsOverview() {
     };
 
     fetchMarketStats();
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
@@ -488,12 +433,6 @@ export default function StatsOverview() {
 
   return (
     <div>
-      {/* {showLoading && (
-        <KaiaLoading
-          unlock={marketLoading}
-          onAnimationComplete={handleLoadingComplete}
-        />
-      )} */}
       {/* KaiaChain Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 items-stretch">
         <div className="flex items-center min-w-0 md:col-span-1">
@@ -501,7 +440,7 @@ export default function StatsOverview() {
           <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mr-3 overflow-hidden">
             <Image
               src="/icons/kaia-kaia-logo.svg"
-              alt="Kaia Logo"
+              alt={t('kaiaLogo')}
               width={80}
               height={80}
               priority
@@ -511,7 +450,7 @@ export default function StatsOverview() {
             <div className="flex items-center gap-2 mb-1">
               <span className="font-semibold text-lg text-gray-900 ">Kaia</span>
               <span className="text-xs text-gray-400 font-medium">
-                KAIA Price
+                {t('kaiaPrice')}
               </span>
               {!marketLoading && marketData?.price?.rank && (
                 <span className="inline-flex items-center px-1.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
@@ -535,93 +474,18 @@ export default function StatsOverview() {
             )}
           </div>
         </div>
-        {/* <div className="md:col-span-3 flex flex-col justify-stretch">
-          <MoreDetailsCard
-            href="https://kaiascan.io/"
-            linkText="kaiascan"
-            className="h-full"
-            loading={networkLoading}
-          >
-            <div className="flex-1 min-w-0 flex items-stretch w-full rounded-2xl p-4 flex-col h-full bg-white text-gray-900 shadow border border-gray-100">
-              <div className="flex items-center justify-between  mb-5">
-                <div className="flex items-center mr-8 min-w-fit">
-                  <div className="w-10 h-10 rounded-xl bg-[#49546A] flex items-center justify-center mr-2">
-                    <FaNetworkWired className="w-7 h-7" />
-                  </div>
-                  <span className="text-xl font-semibold">主网</span>
-                </div>
-                <div className="flex justify-between bg-[#49546A] rounded-lg px-4 py-2 shadow-sm">
-                  <div className="flex items-center">
-                    <FaNetworkWired className="w-5 h-5 text-[#BFF007] mr-2" />
-                    <span className="text-sm text-gray-200 mr-1">
-                      当前区块高度
-                    </span>
-                  </div>
-                  <span className="text-xl text-center font-bold text-[#BFF007] tracking-wider min-w-32">
-                    {blockHeight}
-                  </span>
-                </div>
-              </div>
-              <div className=" flex items-center">
-                <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-y-4 gap-x-8">
-                  <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 mb-1">
-                      共识节点数
-                    </span>
-                    <span className="text-2xl font-bold">
-                      {networkStats?.nodes}
-                    </span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 mb-1">
-                      平均出块时间<sup className="ml-0.5"></sup>
-                    </span>
-                    <span className="text-2xl font-bold">
-                      {networkStats?.avgBlockTime}s
-                    </span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 mb-1">
-                      昨日用户交易费<sup className="ml-0.5"></sup>
-                    </span>
-                    <span className="text-2xl font-bold">
-                      {formatNumber(networkStats?.totalFees, 2, {
-                        suffix: " KAIA",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-sm text-gray-500 mb-1">
-                      区块平均交易数<sup className="ml-0.5">(最近20个区块)</sup>
-                    </span>
-                    <span className="text-2xl font-bold">
-                      {networkStats?.avgTxCount24h}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </MoreDetailsCard>
-        </div> */}
       </div>
       <MoreDetailsCard
         href="https://www.coingecko.com/en/coins/kaia"
         linkText="coingecko"
         loading={marketLoading}
       >
-        <div className="min-h-[400px]">
+        <div className="min-h-[90px]">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[90px]">
             {marketData?.market.map((stat, index: number) => (
               <StatCard key={index} {...stat} trend={stat.trend || "flat"} />
             ))}
           </div>
-          {/* market table */}
-          {marketData?.tickers && marketData.tickers.length > 0 && (
-            <KaiaMarketsTable
-              tickers={marketData.tickers}
-              totalVolume={marketData.marketDataRaw?.total_volume?.usd || 0}
-            />
-          )}
         </div>
       </MoreDetailsCard>
     </div>
