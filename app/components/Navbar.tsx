@@ -1,7 +1,11 @@
-import Link from 'next/link';
+import {Link} from '../../i18n/routing';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
+  const t = useTranslations('nav');
+
   return (
     <nav className="bg-white shadow-lg">
       <div className="container mx-auto px-4">
@@ -18,22 +22,25 @@ const Navbar = () => {
               <span className="ml-2 px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-600 rounded-full">Beta</span>
             </div>
           </Link>
-          <div className="flex space-x-8">
-            <Link href="/" className="hover:text-blue-600">
-              Home
-            </Link>
-            <Link href="/stats" className="hover:text-blue-600">
-              Stats
-            </Link>
-            <Link href="/tools" className="hover:text-blue-600">
-              Tools
-            </Link>
-            <Link href="/events" className="hover:text-blue-600">
-              Events
-            </Link>
-            <Link href="/resources" className="hover:text-blue-600">
-              Resources
-            </Link>
+          <div className="flex items-center space-x-8">
+            <div className="flex space-x-8">
+              <Link href="/" className="hover:text-blue-600">
+                {t('home')}
+              </Link>
+              <Link href="/stats" className="hover:text-blue-600">
+                {t('stats')}
+              </Link>
+              <Link href="/tools" className="hover:text-blue-600">
+                {t('tools')}
+              </Link>
+              <Link href="/events" className="hover:text-blue-600">
+                {t('events')}
+              </Link>
+              <Link href="/resources" className="hover:text-blue-600">
+                {t('resources')}
+              </Link>
+            </div>
+            <LanguageSwitcher />
           </div>
         </div>
       </div>

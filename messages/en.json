@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "Home",
+    "stats": "Stats",
+    "tools": "Tools",
+    "events": "Events",
+    "resources": "Resources"
+  },
+  "home": {
+    "title": "Kaiaverse Portal | Your AI-First Gateway to the Kaia Ecosystem",
+    "description": "Kaiaverse Portal is your comprehensive gateway to the Kaia Ecosystem, offering AI-powered tools, resources, and insights for the next generation of digital innovation.",
+    "welcome": "Welcome to Kaiaverse Portal",
+    "subtitle": "Your AI-powered gateway to the Kaia ecosystem",
+    "features": {
+      "tools": {
+        "title": "Tools & Services",
+        "description": "Access Kaia ecosystem tools including faucet, staking, swap, and lending services"
+      },
+      "events": {
+        "title": "Events Calendar",
+        "description": "Stay updated with global Kaia ecosystem events and activities"
+      },
+      "resources": {
+        "title": "Resource Hub",
+        "description": "Explore comprehensive resources, documentation, and community links"
+      }
+    },
+    "learnMore": "Learn more"
+  },
+  "stats": {
+    "title": "KaiaChain Ecosystem Statistics",
+    "pageTitle": "KaiaChain Stats | KaiaVerse Portal",
+    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard"
+  },
+  "tools": {
+    "title": "Kaia Tools & Services",
+    "faucet": {
+      "name": "Kaia Faucet",
+      "description": "Get testnet tokens"
+    },
+    "staking": {
+      "name": "Staking",
+      "description": "Stake Kaia tokens to earn rewards"
+    },
+    "swap": {
+      "name": "Swap",
+      "description": "Exchange tokens in the Kaia ecosystem"
+    },
+    "lending": {
+      "name": "Lending",
+      "description": "Lending services in the Kaia ecosystem"
+    },
+    "useNow": "Use Now"
+  },
+  "events": {
+    "title": "Kaia Events Calendar",
+    "allEvents": "All Events",
+    "upcoming": "Upcoming",
+    "ongoing": "Ongoing",
+    "past": "Past",
+    "loading": "Loading events data...",
+    "error": "Failed to load events data",
+    "noEvents": "No events matching criteria",
+    "registerNow": "Register Now",
+    "viewDetails": "View Details",
+    "inProgress": "In Progress",
+    "pastEvents": "Past Events",
+    "calendarTitle": "Upcoming Events Calendar",
+    "clickCalendar": "Click events in calendar to view details"
+  },
+  "aiQuery": {
+    "placeholder": "Ask anything about the Kaia ecosystem...",
+    "queryButton": "Query",
+    "querying": "Querying...",
+    "responseTitle": "AI Assistant Response:",
+    "sampleResponse": "This is a sample response. In the actual implementation, this will connect to the Kaiaverse AI backend service.",
+    "suggestions": [
+      {
+        "question": "How to get started with Kaia development?",
+        "description": "Learn about development environment setup and basic concepts"
+      },
+      {
+        "question": "What are the main components of the Kaia ecosystem?",
+        "description": "Explore Kaia's core functions and services"
+      },
+      {
+        "question": "How to participate in Kaia's staking program?",
+        "description": "Learn about staking mechanisms and reward models"
+      },
+      {
+        "question": "Latest Kaia hackathon activity information?",
+        "description": "Get the latest event details and registration methods"
+      }
+    ]
+  },
+  "resources": {
+    "title": "Kaia Resource Center",
+    "categories": {
+      "development": "Development Documentation",
+      "community": "Community Resources",
+      "learning": "Learning Resources"
+    },
+    "docs": {
+      "quickStart": {
+        "title": "Quick Start Guide",
+        "description": "Start here to learn how to develop with Kaia"
+      },
+      "devTools": {
+        "title": "Development Tools Documentation",
+        "description": "Kaia development tools documentation"
+      },
+      "sdk": {
+        "title": "SDK Documentation",
+        "description": "SDK usage guides for various programming languages"
+      },
+      "whitepaper": {
+        "title": "Whitepaper",
+        "description": "Kaia whitepaper"
+      }
+    },
+    "community": {
+      "discord": {
+        "title": "Discord Community",
+        "description": "Join our Discord community for discussions"
+      },
+      "forum": {
+        "title": "Developer Forum",
+        "description": "Technical discussions and Q&A"
+      },
+      "github": {
+        "title": "Github Repository",
+        "description": "View and contribute code"
+      }
+    },
+    "learning": {
+      "tutorials": {
+        "title": "Tutorial Center",
+        "description": "Collection of tutorials to learn building Kaia applications"
+      },
+      "examples": {
+        "title": "Example Projects",
+        "description": "Reference implementation example projects"
+      },
+      "videos": {
+        "title": "Video Tutorials",
+        "description": "Watch videos to learn Kaia development"
+      }
+    },
+    "visitResource": "Visit Resource"
+  },
+  "common": {
+    "language": "Language",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+} 

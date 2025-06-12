@@ -1,6 +1,12 @@
-import type { Metadata } from "next";
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { GA_TRACKING_ID } from "../lib/gtag";
+import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,15 +51,33 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function LocaleLayout({
+  children,
+  params
+}: Props) {
+  // Await params in Next.js 15
+  const { locale } = await params;
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages();
+
   return (
-    <html>
+    <html lang={locale}>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        {children}
+        <NextIntlClientProvider messages={messages}>
+          <Navbar />
+          <main className="container mx-auto px-4 flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </NextIntlClientProvider>
+        <GoogleAnalytics gaId={GA_TRACKING_ID} />
       </body>
     </html>
   );

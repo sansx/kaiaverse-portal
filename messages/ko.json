@@ -1,0 +1,157 @@
+{
+  "nav": {
+    "home": "홈",
+    "stats": "통계",
+    "tools": "도구",
+    "events": "이벤트",
+    "resources": "리소스"
+  },
+  "home": {
+    "title": "Kaiaverse Portal | Kaia 생태계를 위한 AI 우선 게이트웨이",
+    "description": "Kaiaverse Portal은 차세대 디지털 혁신을 위한 AI 기반 도구, 리소스 및 인사이트를 제공하는 Kaia 생태계의 종합 게이트웨이입니다.",
+    "welcome": "Kaiaverse Portal에 오신 것을 환영합니다",
+    "subtitle": "Kaia 생태계를 위한 AI 기반 게이트웨이",
+    "features": {
+      "tools": {
+        "title": "도구 및 서비스",
+        "description": "수도꼭지, 스테이킹, 스왑 및 대출 서비스를 포함한 Kaia 생태계 도구에 액세스"
+      },
+      "events": {
+        "title": "이벤트 캘린더",
+        "description": "전 세계 Kaia 생태계 이벤트 및 활동의 최신 정보를 확인하세요"
+      },
+      "resources": {
+        "title": "리소스 허브",
+        "description": "포괄적인 리소스, 문서 및 커뮤니티 링크 탐색"
+      }
+    },
+    "learnMore": "자세히 알아보기"
+  },
+  "stats": {
+    "title": "KaiaChain 생태계 통계",
+    "pageTitle": "KaiaChain Stats | KaiaVerse Portal",
+    "pageDescription": "KaiaChain ecosystem statistics and analytics dashboard"
+  },
+  "tools": {
+    "title": "Kaia 도구 및 서비스",
+    "faucet": {
+      "name": "Kaia Faucet",
+      "description": "테스트넷 토큰 받기"
+    },
+    "staking": {
+      "name": "스테이킹",
+      "description": "Kaia 토큰을 스테이킹하여 보상 받기"
+    },
+    "swap": {
+      "name": "스왑",
+      "description": "Kaia 생태계에서 토큰 교환"
+    },
+    "lending": {
+      "name": "대출",
+      "description": "Kaia 생태계의 대출 서비스"
+    },
+    "useNow": "지금 사용"
+  },
+  "events": {
+    "title": "Kaia 이벤트 캘린더",
+    "allEvents": "모든 이벤트",
+    "upcoming": "예정됨",
+    "ongoing": "진행 중",
+    "past": "종료됨",
+    "loading": "이벤트 데이터 로딩 중...",
+    "error": "이벤트 데이터 로드 실패",
+    "noEvents": "조건에 맞는 이벤트가 없습니다",
+    "registerNow": "지금 등록",
+    "viewDetails": "세부 정보 보기",
+    "inProgress": "진행 중",
+    "pastEvents": "과거 이벤트",
+    "calendarTitle": "예정된 이벤트 캘린더",
+    "clickCalendar": "세부 정보를 보려면 캘린더의 이벤트를 클릭하세요"
+  },
+  "aiQuery": {
+    "placeholder": "Kaia 생태계에 대해 무엇이든 물어보세요...",
+    "queryButton": "질의",
+    "querying": "질의 중...",
+    "responseTitle": "AI 어시스턴트 응답:",
+    "sampleResponse": "이것은 샘플 응답입니다. 실제 구현에서는 Kaiaverse AI 백엔드 서비스에 연결됩니다.",
+    "suggestions": [
+      {
+        "question": "Kaia 개발을 시작하는 방법은?",
+        "description": "개발 환경 설정 및 기본 개념 학습"
+      },
+      {
+        "question": "Kaia 생태계의 주요 구성 요소는 무엇인가요?",
+        "description": "Kaia의 핵심 기능과 서비스 탐색"
+      },
+      {
+        "question": "Kaia의 스테이킹 프로그램에 참여하는 방법은?",
+        "description": "스테이킹 메커니즘과 보상 모델 학습"
+      },
+      {
+        "question": "최근 Kaia 해커톤 활동 정보는?",
+        "description": "최신 이벤트 세부 정보 및 등록 방법 확인"
+      }
+    ]
+  },
+  "resources": {
+    "title": "Kaia 리소스 센터",
+    "categories": {
+      "development": "개발 문서",
+      "community": "커뮤니티 리소스",
+      "learning": "학습 리소스"
+    },
+    "docs": {
+      "quickStart": {
+        "title": "빠른 시작 가이드",
+        "description": "Kaia 개발을 시작하는 방법을 배우세요"
+      },
+      "devTools": {
+        "title": "개발 도구 문서",
+        "description": "Kaia 개발 도구 문서"
+      },
+      "sdk": {
+        "title": "SDK 문서",
+        "description": "다양한 프로그래밍 언어를 위한 SDK 사용 가이드"
+      },
+      "whitepaper": {
+        "title": "백서",
+        "description": "Kaia 백서"
+      }
+    },
+    "community": {
+      "discord": {
+        "title": "Discord 커뮤니티",
+        "description": "토론을 위해 Discord 커뮤니티에 참여하세요"
+      },
+      "forum": {
+        "title": "개발자 포럼",
+        "description": "기술 토론 및 Q&A"
+      },
+      "github": {
+        "title": "Github 저장소",
+        "description": "코드 보기 및 기여"
+      }
+    },
+    "learning": {
+      "tutorials": {
+        "title": "튜토리얼 센터",
+        "description": "Kaia 애플리케이션 구축을 배우는 튜토리얼 모음"
+      },
+      "examples": {
+        "title": "예제 프로젝트",
+        "description": "참조 구현 예제 프로젝트"
+      },
+      "videos": {
+        "title": "비디오 튜토리얼",
+        "description": "비디오를 시청하여 Kaia 개발 학습"
+      }
+    },
+    "visitResource": "리소스 방문"
+  },
+  "common": {
+    "language": "언어",
+    "loading": "로딩 중...",
+    "error": "오류",
+    "success": "성공"
+  }
+} 

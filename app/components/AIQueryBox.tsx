@@ -1,36 +1,22 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+
+interface SuggestionQuestion {
+  question: string;
+  description: string;
+}
 
 const AIQueryBox = () => {
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const t = useTranslations('aiQuery');
 
   // 示例建议问题列表
-  const suggestionQuestions = [
-    {
-      id: 1,
-      question: "如何开始使用Kaia进行开发？",
-      description: "了解开发环境设置和基础概念"
-    },
-    {
-      id: 2,
-      question: "Kaia生态系统有哪些主要组件？",
-      description: "探索Kaia的核心功能和服务"
-    },
-    {
-      id: 3,
-      question: "如何参与Kaia的质押计划？",
-      description: "了解质押机制和收益模式"
-    },
-    {
-      id: 4,
-      question: "最近的Kaia黑客松活动信息？",
-      description: "获取最新活动详情和报名方式"
-    }
-  ];
+  const suggestionQuestions = t.raw('suggestions') as SuggestionQuestion[];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +25,7 @@ const AIQueryBox = () => {
     // TODO: 实现与AI后端的集成
     // 这里是模拟响应
     setTimeout(() => {
-      setResult('这是一个示例响应。在实际实现中，这里将连接到Kaiaverse AI后端服务。');
+      setResult(t('sampleResponse'));
       setIsLoading(false);
     }, 1000);
   };
@@ -59,7 +45,7 @@ const AIQueryBox = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setShowSuggestions(true)}
-              placeholder="询问关于Kaia生态的任何问题..."
+              placeholder={t('placeholder')}
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
@@ -67,7 +53,7 @@ const AIQueryBox = () => {
               disabled={isLoading}
               className="absolute right-2 top-2 px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
             >
-              {isLoading ? '查询中...' : '查询'}
+              {isLoading ? t('querying') : t('queryButton')}
             </button>
           </div>
         </form>
@@ -79,9 +65,9 @@ const AIQueryBox = () => {
             onMouseEnter={() => setShowSuggestions(true)}
             onMouseLeave={() => setShowSuggestions(false)}
           >
-            {suggestionQuestions.map((item) => (
+            {suggestionQuestions.map((item, index) => (
               <div
-                key={item.id}
+                key={index}
                 className="p-4 hover:bg-white/40 cursor-pointer transition-all duration-200"
                 onClick={() => handleSuggestionClick(item.question)}
               >
@@ -95,7 +81,7 @@ const AIQueryBox = () => {
 
       {result && (
         <div className="bg-gray-50 p-4 rounded-lg mt-4">
-          <h3 className="font-semibold mb-2">AI助手回应：</h3>
+          <h3 className="font-semibold mb-2">{t('responseTitle')}</h3>
           <p className="text-gray-700">{result}</p>
         </div>
       )}
