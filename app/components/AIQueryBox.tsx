@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 
 interface SuggestionQuestion {
@@ -10,29 +10,61 @@ interface SuggestionQuestion {
 
 const AIQueryBox = () => {
   const [query, setQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [assistantBaseUrl, setAssistantBaseUrl] = useState('https://assistant.kaiaverse.xyz');
   const t = useTranslations('aiQuery');
+
+  // 在客户端设置 AI 助手 URL，避免水合错误
+  useEffect(() => {
+    const url = process.env.NEXT_PUBLIC_AI_ASSISTANT_URL || 'https://assistant.kaiaverse.xyz';
+    setAssistantBaseUrl(url);
+  }, []);
 
   // 示例建议问题列表
   const suggestionQuestions = t.raw('suggestions') as SuggestionQuestion[];
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // TODO: 实现与AI后端的集成
-    // 这里是模拟响应
-    setTimeout(() => {
-      setResult(t('sampleResponse'));
+    try {
+      setIsLoading(true);
+      
+      // 如果查询为空，直接跳转到助手页面
+      if (!query.trim()) {
+        window.open(assistantBaseUrl, '_blank');
+        return;
+      }
+      
+      // 将查询参数编码并跳转到助手页面
+      const encodedQuery = encodeURIComponent(query.trim());
+      const assistantUrl = `${assistantBaseUrl}?query=${encodedQuery}`;
+      
+      // 在新标签页中打开助手页面
+      window.open(assistantUrl, '_blank');
+    } catch (error) {
+      console.error('Failed to open AI assistant:', error);
+      // 可以在这里添加用户友好的错误提示
+      alert('无法打开 AI 助手，请稍后再试。');
+    } finally {
+      // 重置加载状态
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleSuggestionClick = (question: string) => {
     setQuery(question);
     setShowSuggestions(false);
+    
+    try {
+      // 直接跳转到助手页面并传递建议问题
+      const encodedQuery = encodeURIComponent(question);
+      const assistantUrl = `${assistantBaseUrl}?query=${encodedQuery}`;
+      window.open(assistantUrl, '_blank');
+    } catch (error) {
+      console.error('Failed to open AI assistant:', error);
+      alert('无法打开 AI 助手，请稍后再试。');
+    }
   };
 
   return (
@@ -50,8 +82,7 @@ const AIQueryBox = () => {
             />
             <button
               type="submit"
-              disabled={isLoading}
-              className="absolute right-2 top-2 px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+              className="absolute right-2 top-2 px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
               {isLoading ? t('querying') : t('queryButton')}
             </button>
@@ -79,12 +110,6 @@ const AIQueryBox = () => {
         )}
       </div>
 
-      {result && (
-        <div className="bg-gray-50 p-4 rounded-lg mt-4">
-          <h3 className="font-semibold mb-2">{t('responseTitle')}</h3>
-          <p className="text-gray-700">{result}</p>
-        </div>
-      )}
     </div>
   );
 };
