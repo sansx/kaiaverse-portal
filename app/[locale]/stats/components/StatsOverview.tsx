@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import MoreDetailsCard from "@/components/MoreDetailsCard";
+import KaiaMarketsTable from "./KaiaMarketsTable";
 
 interface StatCardProps {
   title: string;
@@ -25,7 +26,7 @@ interface StatCardProps {
 }
 
 // 格式化数字为带单位的字符串
-const formatNumber = (
+export const formatNumber = (
   value: number | string | undefined | null,
   decimals: number = 2,
   options: {
@@ -181,18 +182,71 @@ interface MarketData {
     current: string;
     change: string;
     trend: "up" | "down";
+    rank: number;
+    symbol?: string;
+    displayName?: string;
+    lastUpdated?: string;
+    volume24h?: string;
+    high24h?: string;
+    low24h?: string;
   };
   market: Array<{
     title: string;
     value: string;
     change?: string;
-    trend?: "up" | "down";
+    trend?: "up" | "down" | "flat";
+    description?: string;
+    category?: "market" | "trading" | "supply" | "ratio" | "custom";
+    importance?: "high" | "medium" | "low";
     customIcon?: {
       icon: React.ReactNode;
       bgColor?: string;
       iconColor?: string;
     };
+    metadata?: {
+      source?: string;
+      lastUpdated?: string;
+      precision?: number;
+      unit?: string;
+    };
   }>;
+  tickers?: Array<{
+    base: string;
+    target: string;
+    market: {
+      name: string;
+      identifier: string;
+      has_trading_incentive: boolean;
+    };
+    last: number | null;
+    volume: number;
+    converted_last: {
+      btc: number;
+      eth: number;
+      usd: number;
+    };
+    converted_volume: {
+      btc: number;
+      eth: number;
+      usd: number;
+    };
+    trust_score: string | null;
+    bid_ask_spread_percentage: number | null;
+    timestamp: string;
+    last_traded_at: string;
+    last_fetch_at: string | null;
+    is_anomaly: boolean;
+    is_stale: boolean;
+    trade_url: string;
+    token_info_url: string | null;
+    coin_id: string;
+    target_coin_id: string;
+  }>;
+  marketDataRaw?: {
+    total_volume?: {
+      usd?: number;
+    };
+  };
 }
 
 export default function StatsOverview() {
@@ -230,7 +284,9 @@ export default function StatsOverview() {
           .slice(0, -1)
           .map((block: unknown, index: number) => {
             const blockData = block as { datetime: string };
-            const nextBlockData = blocks.results[index + 1] as { datetime: string };
+            const nextBlockData = blocks.results[index + 1] as {
+              datetime: string;
+            };
             const currentTime = new Date(blockData.datetime).getTime();
             const nextTime = new Date(nextBlockData.datetime).getTime();
             return (currentTime - nextTime) / 1000; // 转换为秒
@@ -247,13 +303,10 @@ export default function StatsOverview() {
           avgBlockTime24h: Math.round(avgBlockTime * 100) / 100,
           totalFees: totalFees.result * 1,
           avgTxCount24h:
-            blocks.results.reduce(
-              (acc: number, block: unknown) => {
-                const blockData = block as { total_transaction_count: number };
-                return acc + blockData.total_transaction_count;
-              },
-              0
-            ) / blocks.results.length,
+            blocks.results.reduce((acc: number, block: unknown) => {
+              const blockData = block as { total_transaction_count: number };
+              return acc + blockData.total_transaction_count;
+            }, 0) / blocks.results.length,
         });
       } catch (error) {
         console.error("Failed to fetch network stats:", error);
@@ -278,7 +331,7 @@ export default function StatsOverview() {
           throw new Error("Invalid market data");
         }
 
-        const { market_data } = data.data;
+        const { market_data, market_cap_rank, tickers } = data.data;
         const price_change_24h_in_percentage = market_data
           .price_change_24h_in_currency?.usd
           ? (market_data.price_change_24h_in_currency.usd /
@@ -291,6 +344,19 @@ export default function StatsOverview() {
             current: formatNumber(market_data.current_price?.usd, 2),
             change: formatNumber(price_change_24h_in_percentage, 2) + "%",
             trend: price_change_24h_in_percentage > 0 ? "up" : "down",
+            rank: market_cap_rank,
+            symbol: "KAIA",
+            displayName: "Kaia",
+            volume24h: formatNumber(market_data.total_volume?.usd, 2, {
+              prefix: "$",
+            }),
+            high24h: formatNumber(market_data.high_24h?.usd, 2, {
+              prefix: "$",
+            }),
+            low24h: formatNumber(market_data.low_24h?.usd, 2, {
+              prefix: "$",
+            }),
+            lastUpdated: new Date().toISOString(),
           },
           market: [
             {
@@ -305,16 +371,34 @@ export default function StatsOverview() {
                 market_data.market_cap_change_percentage_24h > 0
                   ? "up"
                   : "down",
+              category: "market",
+              importance: "high",
+              description: "当前市场总值",
+              metadata: {
+                source: "coingecko",
+                precision: 2,
+                unit: "USD",
+                lastUpdated: new Date().toISOString(),
+              },
             },
             {
               title: "24小时交易量",
               value: formatNumber(market_data.total_volume?.usd, 2, {
                 prefix: "$",
               }),
+              category: "trading",
+              importance: "high",
+              description: "过去24小时的交易总量",
               customIcon: {
                 icon: <FaExchangeAlt />,
                 bgColor: "bg-purple-100",
                 iconColor: "text-purple-600",
+              },
+              metadata: {
+                source: "coingecko",
+                precision: 2,
+                unit: "USD",
+                lastUpdated: new Date().toISOString(),
               },
             },
             {
@@ -322,10 +406,19 @@ export default function StatsOverview() {
               value: formatNumber(market_data.circulating_supply, 2, {
                 suffix: " KAIA",
               }),
+              category: "supply",
+              importance: "medium",
+              description: "当前流通中的代币数量",
               customIcon: {
                 icon: <FaCoins />,
                 bgColor: "bg-yellow-100",
                 iconColor: "text-yellow-600",
+              },
+              metadata: {
+                source: "coingecko",
+                precision: 2,
+                unit: "KAIA",
+                lastUpdated: new Date().toISOString(),
               },
             },
             {
@@ -342,13 +435,24 @@ export default function StatsOverview() {
                     isPercentage: true,
                   }
                 ) + "%",
+              category: "ratio",
+              importance: "medium",
+              description: "交易活跃度指标",
               customIcon: {
                 icon: <FaChartPie />,
                 bgColor: "bg-indigo-100",
                 iconColor: "text-indigo-600",
               },
+              metadata: {
+                source: "coingecko",
+                precision: 2,
+                unit: "percentage",
+                lastUpdated: new Date().toISOString(),
+              },
             },
           ],
+          marketDataRaw: market_data,
+          tickers
         });
       } catch (error) {
         console.error("Failed to fetch market stats:", error);
@@ -409,6 +513,11 @@ export default function StatsOverview() {
               <span className="text-xs text-gray-400 font-medium">
                 KAIA Price
               </span>
+              {!marketLoading && marketData?.price?.rank && (
+                <span className="inline-flex items-center px-1.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                  #{marketData.price.rank}
+                </span>
+              )}
             </div>
             {/* Kaia Price Show */}
             {marketLoading ? (
@@ -426,7 +535,6 @@ export default function StatsOverview() {
             )}
           </div>
         </div>
-
         {/* <div className="md:col-span-3 flex flex-col justify-stretch">
           <MoreDetailsCard
             href="https://kaiascan.io/"
@@ -501,10 +609,19 @@ export default function StatsOverview() {
         linkText="coingecko"
         loading={marketLoading}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[90px]">
-          {marketData?.market.map((stat, index: number) => (
-            <StatCard key={index} {...stat} trend={stat.trend || "flat"} />
-          ))}
+        <div className="min-h-[400px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-[90px]">
+            {marketData?.market.map((stat, index: number) => (
+              <StatCard key={index} {...stat} trend={stat.trend || "flat"} />
+            ))}
+          </div>
+          {/* market table */}
+          {marketData?.tickers && marketData.tickers.length > 0 && (
+            <KaiaMarketsTable
+              tickers={marketData.tickers}
+              totalVolume={marketData.marketDataRaw?.total_volume?.usd || 0}
+            />
+          )}
         </div>
       </MoreDetailsCard>
     </div>
