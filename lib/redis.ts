@@ -1,7 +1,5 @@
 import Redis from 'ioredis';
 
-let redis: Redis | null = null;
-
 // 环境前缀配置
 const ENV_PREFIXES = {
   dev: 'dev-',
@@ -163,6 +161,8 @@ export class PrefixedRedisOperations {
   }
 }
 
+let client: Redis | null = null;
+
 function createRedisClient(): Redis {
   if (!process.env.REDIS_URL) {
     throw new Error('REDIS_URL 环境变量未设置');
@@ -193,16 +193,15 @@ function createRedisClient(): Redis {
 }
 
 function getRedisClient(): Redis {
-  if (!redis) {
-    redis = createRedisClient();
+  if (!client) {
+    client = createRedisClient();
   }
-  return redis;
+  return client;
 }
 
 // 获取带前缀操作的Redis客户端
 export function getPrefixedRedisClient(): PrefixedRedisOperations {
-  const client = getRedisClient();
-  return new PrefixedRedisOperations(client);
+  return new PrefixedRedisOperations(getRedisClient());
 }
 
 export default getRedisClient; 
