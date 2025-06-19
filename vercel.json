@@ -1,7 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "crons": [{
-    "path": "/api/sync/market",
-    "schedule": "*/5 * * * *"
-  }]
+  "crons": [
+    {
+      "path": "/api/sync/market",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/sync/cmcRank",
+      "schedule": "*/5 * * * *"
+    }
+  ]
 }
