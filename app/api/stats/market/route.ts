@@ -6,6 +6,8 @@ const redis = getPrefixedRedisClient();
 // 缓存键名
 const MARKET_CACHE_KEY = "market:kaia";
 const MARKET_LAST_SYNC_KEY = "market:last_sync";
+const CMC_CACHE_KEY = "cmc:listings";
+const CMC_LAST_SYNC_KEY = "cmc:last_sync";
 const CACHE_TTL = 24 * 60 * 60; // 24小时
 
 // 市场数据类型 - 灵活处理复杂的 CoinGecko API 响应
@@ -43,11 +45,59 @@ export interface MarketData {
   [key: string]: unknown;
 }
 
+// CMC数据类型
+export interface CMCData {
+  status?: {
+    timestamp?: string;
+    error_code?: number;
+    error_message?: string;
+    elapsed?: number;
+    credit_count?: number;
+    notice?: string;
+  };
+  data?: Array<{
+    id?: number;
+    name?: string;
+    symbol?: string;
+    slug?: string;
+    num_market_pairs?: number;
+    date_added?: string;
+    tags?: string[];
+    max_supply?: number;
+    circulating_supply?: number;
+    total_supply?: number;
+    platform?: Record<string, unknown> | null;
+    cmc_rank?: number;
+    last_updated?: string;
+    quote?: {
+      USD?: {
+        price?: number;
+        volume_24h?: number;
+        volume_change_24h?: number;
+        percent_change_1h?: number;
+        percent_change_24h?: number;
+        percent_change_7d?: number;
+        percent_change_30d?: number;
+        percent_change_60d?: number;
+        percent_change_90d?: number;
+        market_cap?: number;
+        market_cap_dominance?: number;
+        fully_diluted_market_cap?: number;
+        last_updated?: string;
+      };
+    };
+    [key: string]: unknown;
+  }>;
+  [key: string]: unknown;
+}
+
 // 内存缓存
 interface CacheData {
-  marketData: MarketData;
+  marketData: MarketData | null;
+  cmcData: CMCData | null;
   timestamp: number;
   lastSyncTime?: string;
+  lastCMCSyncTime?: string;
 }
 
 let memoryCache: CacheData | null = null;
@@ -77,7 +127,7 @@ async function retryOperation<T>(
 }
 
 // 检查缓存是否有效
-function isCacheValid(cache: CacheData | null, currentSyncTime?: string): boolean {
+function isCacheValid(cache: CacheData | null, currentSyncTime?: string, currentCMCSyncTime?: string): boolean {
   if (!cache) return false;
   
   const now = Date.now();
@@ -91,7 +141,12 @@ function isCacheValid(cache: CacheData | null, currentSyncTime?: string): boolea
   
   // 如果同步时间发生变化，则缓存无效
   if (currentSyncTime && cache.lastSyncTime && currentSyncTime !== cache.lastSyncTime) {
-    console.log('检测到新的同步数据，缓存失效');
+    console.log('检测到新的市场同步数据，缓存失效');
+    return false;
+  }
+  
+  if (currentCMCSyncTime && cache.lastCMCSyncTime && currentCMCSyncTime !== cache.lastCMCSyncTime) {
+    console.log('检测到新的CMC同步数据，缓存失效');
     return false;
   }
   
@@ -99,36 +154,30 @@ function isCacheValid(cache: CacheData | null, currentSyncTime?: string): boolea
 }
 
 // 获取最后同步时间
-async function getLastSyncTime(): Promise<string | null> {
+async function getLastSyncTimes(): Promise<{ marketSync: string | null; cmcSync: string | null }> {
   try {
-    const lastSync = await redis.get(MARKET_LAST_SYNC_KEY);
-    return lastSync;
+    const [marketSync, cmcSync] = await Promise.all([
+      redis.get(MARKET_LAST_SYNC_KEY),
+      redis.get(CMC_LAST_SYNC_KEY)
+    ]);
+    return { marketSync, cmcSync };
   } catch (error) {
     console.warn('获取同步时间失败:', error);
+    return { marketSync: null, cmcSync: null };
   }
-  return null;
 }
 
 // 获取市场数据
 async function getMarketData(): Promise<MarketData | null> {
   return retryOperation(async () => {
-    // 先检查最后同步时间
-    const currentSyncTime = await getLastSyncTime();
-    
-    // 检查内存缓存是否有效
-    if (isCacheValid(memoryCache, currentSyncTime || undefined)) {
-      console.log(`使用内存缓存数据`);
-      return memoryCache!.marketData;
-    }
-    
-    console.log('缓存无效或不存在，从 Redis 获取数据...');
+    console.log('从 Redis 获取市场数据...');
     
     // 从 Redis 获取市场数据
     const cachedData = await redis.get(MARKET_CACHE_KEY);
     
     if (!cachedData) {
       console.log('未找到市场数据，请先运行同步命令');
-      return null; // 直接返回null，不缓存空数据
+      return null;
     }
     
     let marketData: MarketData;
@@ -143,28 +192,79 @@ async function getMarketData(): Promise<MarketData | null> {
       return null;
     }
     
-    // 更新内存缓存
-    memoryCache = {
-      marketData,
-      timestamp: Date.now(),
-      lastSyncTime: currentSyncTime || undefined
-    };
-    
-    console.log(`成功获取并缓存市场数据`);
+    console.log(`成功获取市场数据`);
     return marketData;
   });
 }
 
+// 获取CMC数据
+async function getCMCData(): Promise<CMCData | null> {
+  return retryOperation(async () => {
+    console.log('从 Redis 获取CMC数据...');
+    
+    // 从 Redis 获取CMC数据
+    const cachedData = await redis.get(CMC_CACHE_KEY);
+    
+    if (!cachedData) {
+      console.log('未找到CMC数据，请先运行同步命令');
+      return null;
+    }
+    
+    let cmcData: CMCData;
+    try {
+      cmcData = JSON.parse(cachedData);
+      // 验证数据完整性
+      if (!cmcData || typeof cmcData !== 'object') {
+        throw new Error('CMC数据格式无效');
+      }
+    } catch (parseError) {
+      console.error('解析CMC数据失败:', parseError);
+      return null;
+    }
+    
+    console.log(`成功获取CMC数据`);
+    return cmcData;
+  });
+}
+
+// 获取所有数据
+async function getAllData(): Promise<{ marketData: MarketData | null; cmcData: CMCData | null }> {
+  // 先检查最后同步时间
+  const { marketSync, cmcSync } = await getLastSyncTimes();
+  
+  // 检查内存缓存是否有效
+  if (isCacheValid(memoryCache, marketSync || undefined, cmcSync || undefined)) {
+    console.log(`使用内存缓存数据`);
+    return {
+      marketData: memoryCache!.marketData,
+      cmcData: memoryCache!.cmcData
+    };
+  }
+  
+  console.log('缓存无效或不存在，从 Redis 获取数据...');
+  
+  // 并行获取市场数据和CMC数据
+  const [marketData, cmcData] = await Promise.all([
+    getMarketData(),
+    getCMCData()
+  ]);
+  
+  // 更新内存缓存
+  memoryCache = {
+    marketData,
+    cmcData,
+    timestamp: Date.now(),
+    lastSyncTime: marketSync || undefined,
+    lastCMCSyncTime: cmcSync || undefined
+  };
+  
+  console.log(`成功获取并缓存所有数据`);
+  return { marketData, cmcData };
+}
+
 export async function GET() {
   try {
-    const marketData = await getMarketData();
-    
-    if (!marketData) {
-      return NextResponse.json({
-        success: false,
-        error: "No cached market data found. Please run sync first."
-      }, { status: 404 });
-    }
+    const { marketData, cmcData } = await getAllData();
     
     // 准确计算缓存状态
     const isFromMemoryCache = memoryCache && isCacheValid(memoryCache);
@@ -175,14 +275,33 @@ export async function GET() {
       'X-Cache-Status': isFromMemoryCache ? 'HIT' : 'MISS',
     };
     
+    // 打印数据日志
+    if (marketData) {
+      console.log('Market Data from CoinGecko:', marketData);
+    }
+    if (cmcData) {
+      console.log('CoinMarketCap Data:', cmcData);
+    }
+    
     return NextResponse.json({ 
       success: true,
-      data: marketData,
+      data: {
+        market_data: marketData?.market_data,
+        market_cap_rank: marketData?.market_cap_rank,
+        tickers: marketData?.tickers,
+        // 完整的原始数据
+        coingecko_raw: marketData,
+        coinmarketcap_raw: cmcData
+      },
       fromCache: !!isFromMemoryCache,
       meta: {
         cached: !!isFromMemoryCache,
         cacheAge: memoryCache ? Date.now() - memoryCache.timestamp : 0,
-        lastSyncTime: memoryCache?.lastSyncTime || null
+        lastMarketSyncTime: memoryCache?.lastSyncTime || null,
+        lastCMCSyncTime: memoryCache?.lastCMCSyncTime || null,
+        hasMarketData: !!marketData,
+        hasCMCData: !!cmcData,
+        cmcDataCount: Array.isArray(cmcData?.data) ? cmcData.data.length : 0
       }
     }, { headers });
   } catch (error) {

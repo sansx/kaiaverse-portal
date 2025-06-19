@@ -250,8 +250,8 @@ interface MarketData {
 }
 
 export default function StatsOverview() {
-  const t = useTranslations('stats.overview');
-  
+  const t = useTranslations("stats.overview");
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_loading, setLoading] = useState(true);
   const [blockHeight, setBlockHeight] = useState<number>();
@@ -276,7 +276,31 @@ export default function StatsOverview() {
           throw new Error("Invalid market data");
         }
 
-        const { market_data, market_cap_rank, tickers } = data.data;
+        const { market_data, tickers, coinmarketcap_raw } = data.data;
+        
+        // 打印CMC数据（如果存在）
+        if (coinmarketcap_raw) {
+          console.log('CoinMarketCap Data:', coinmarketcap_raw);
+        }
+        
+        // 简化：从CMC数据中获取KAIA排名
+        const getKaiaRank = (cmcData: unknown): number => {
+          try {
+            const data = (cmcData as Record<string, unknown>)?.data;
+            if (!Array.isArray(data)) return 0;
+            
+            const kaiaToken = data.find((token: unknown) => {
+              const t = token as Record<string, unknown>;
+              return t?.symbol === "KAIA" || t?.name === "Kaia";
+            });
+            return (kaiaToken as Record<string, unknown>)?.cmc_rank as number || 0;
+          } catch {
+            return 0;
+          }
+        };
+        
+        const kaiaRank = getKaiaRank(coinmarketcap_raw);
+        
         const price_change_24h_in_percentage = market_data
           .price_change_24h_in_currency?.usd
           ? (market_data.price_change_24h_in_currency.usd /
@@ -289,7 +313,7 @@ export default function StatsOverview() {
             current: formatNumber(market_data.current_price?.usd, 2),
             change: formatNumber(price_change_24h_in_percentage, 2) + "%",
             trend: price_change_24h_in_percentage > 0 ? "up" : "down",
-            rank: market_cap_rank,
+            rank: kaiaRank,
             symbol: "KAIA",
             displayName: "Kaia",
             volume24h: formatNumber(market_data.total_volume?.usd, 2, {
@@ -305,7 +329,7 @@ export default function StatsOverview() {
           },
           market: [
             {
-              title: t('marketCap'),
+              title: t("marketCap"),
               value: formatNumber(market_data.market_cap?.usd, 2, {
                 prefix: "$",
               }),
@@ -318,7 +342,7 @@ export default function StatsOverview() {
                   : "down",
               category: "market",
               importance: "high",
-              description: t('marketCapDescription'),
+              description: t("marketCapDescription"),
               metadata: {
                 source: "coingecko",
                 precision: 2,
@@ -327,13 +351,13 @@ export default function StatsOverview() {
               },
             },
             {
-              title: t('volume24h'),
+              title: t("volume24h"),
               value: formatNumber(market_data.total_volume?.usd, 2, {
                 prefix: "$",
               }),
               category: "trading",
               importance: "high",
-              description: t('volume24hDescription'),
+              description: t("volume24hDescription"),
               customIcon: {
                 icon: <FaExchangeAlt />,
                 bgColor: "bg-purple-100",
@@ -347,13 +371,13 @@ export default function StatsOverview() {
               },
             },
             {
-              title: t('circulatingSupply'),
+              title: t("circulatingSupply"),
               value: formatNumber(market_data.circulating_supply, 2, {
                 suffix: " KAIA",
               }),
               category: "supply",
               importance: "medium",
-              description: t('circulatingSupplyDescription'),
+              description: t("circulatingSupplyDescription"),
               customIcon: {
                 icon: <FaCoins />,
                 bgColor: "bg-yellow-100",
@@ -367,7 +391,7 @@ export default function StatsOverview() {
               },
             },
             {
-              title: t('volumeToMarketCap'),
+              title: t("volumeToMarketCap"),
               value:
                 formatNumber(
                   market_data.total_volume?.usd && market_data.market_cap?.usd
@@ -382,7 +406,7 @@ export default function StatsOverview() {
                 ) + "%",
               category: "ratio",
               importance: "medium",
-              description: t('volumeToMarketCapDescription'),
+              description: t("volumeToMarketCapDescription"),
               customIcon: {
                 icon: <FaChartPie />,
                 bgColor: "bg-indigo-100",
@@ -397,7 +421,7 @@ export default function StatsOverview() {
             },
           ],
           marketDataRaw: market_data,
-          tickers
+          tickers,
         });
       } catch (error) {
         console.error("Failed to fetch market stats:", error);
@@ -440,7 +464,7 @@ export default function StatsOverview() {
           <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mr-3 overflow-hidden">
             <Image
               src="/icons/kaia-kaia-logo.svg"
-              alt={t('kaiaLogo')}
+              alt={t("kaiaLogo")}
               width={80}
               height={80}
               priority
@@ -450,7 +474,7 @@ export default function StatsOverview() {
             <div className="flex items-center gap-2 mb-1">
               <span className="font-semibold text-lg text-gray-900 ">Kaia</span>
               <span className="text-xs text-gray-400 font-medium">
-                {t('kaiaPrice')}
+                {t("kaiaPrice")}
               </span>
               {!marketLoading && marketData?.price?.rank && (
                 <span className="inline-flex items-center px-1.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
